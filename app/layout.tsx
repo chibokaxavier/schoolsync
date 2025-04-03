@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Link from "next/link";
+import { NotebookPen } from "lucide-react";
+import Menu from "@/components/Menu";
 
 const jamjuree = Bai_Jamjuree({
   variable: "--font-jamjuree",
@@ -20,7 +24,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jamjuree.variable}  antialiased`}>{children}</body>
+      <body className={`${jamjuree.variable}  antialiased`}>
+        
+         <div className=" flex ">
+              <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] px-5 ">
+                <Link href={"/"} className="items-center flex pt-5  gap-2">
+                  <NotebookPen size={32} />
+                  <p className="hidden lg:block font-semibold text-lg">SchoolSync</p>
+                </Link>
+                <Menu />
+              </div>
+              <div className="w-[86%] md:w-[92%] lg:w-[84%]  xl:w-[86%] bg-[#F7F8FA] ">
+                <Navbar />
+                {children}
+              </div>
+            </div>
+        
+        {/* {children} */}
+        </body>
     </html>
   );
 }
