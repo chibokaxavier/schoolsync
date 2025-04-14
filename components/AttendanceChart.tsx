@@ -44,8 +44,8 @@ const data = [
 const AttendanceChart = () => {
   return (
     <div className="bg-white rounded-lg p-4 h-full">
-      <div>
-        <h1>Attendance</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-lg font-semibold">Attendance</h1>
         <Image src="/moreDark.png" alt="" width={20} height={20} />
       </div>
       <ResponsiveContainer width="100%" height="90%">
@@ -53,12 +53,19 @@ const AttendanceChart = () => {
           <CartesianGrid
             strokeDasharray="3 3"
             vertical={false}
-            horizontal={false}
+            // horizontal={false}
             stroke="#ddd"
           />
-          <XAxis dataKey="name" axisLine={false} />
-          <YAxis axisLine={false} />
-          <Tooltip />
+          <XAxis
+            dataKey="name"
+            axisLine={false}
+            tick={{ fill: "#d1d5db" }}
+            tickLine={false}
+          />
+          <YAxis axisLine={false} tick={{ fill: "#d1d5db" }} tickLine={false} />
+          <Tooltip
+            contentStyle={{ borderRadius: "10px", borderColor: "light" }}
+          />
           <Legend
             align="left"
             verticalAlign="top"
