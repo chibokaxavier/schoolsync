@@ -90,7 +90,7 @@ const FinanceChart = () => {
           margin={{
             top: 5,
             right: 30,
-            left: 20,
+            left: 0,
             bottom: 5,
           }}
         >
@@ -100,13 +100,13 @@ const FinanceChart = () => {
             axisLine={false}
             tick={{ fill: "#d1d5db" }}
             tickLine={false}
-            tickMargin={20}
+            tickMargin={10}
           />
           <YAxis
             axisLine={false}
             tick={{ fill: "#d1d5db" }}
             tickLine={false}
-            tickMargin={20}
+           
           />
           <Tooltip />
           <Legend
@@ -118,13 +118,13 @@ const FinanceChart = () => {
             type="monotone"
             dataKey="income"
             stroke="#FAE27C"
-            strokeWidth={5}
+            strokeWidth={3}
           />
           <Line
             type="monotone"
             dataKey="expense"
             stroke="#CFCEFF"
-            strokeWidth={5}
+            strokeWidth={3}
           />
         </LineChart>
       </ResponsiveContainer>
