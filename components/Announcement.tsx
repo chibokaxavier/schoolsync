@@ -14,21 +14,21 @@ const events = [
     title: "Lorem ipsom delorr",
     time: "2025-10-9",
     description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto, voluptas dolores dignissimos eum odio minus voluptate. !",
+      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architect. !",
   },
   {
     id: 2,
     title: "Lorem ipsom delorr",
     time: "2025-10-9",
     description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto, voluptas dolores dignissimos eum odio minus voluptate. !",
+      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto. !",
   },
   {
     id: 3,
     title: "Lorem ipsom delorr",
     time: "2025-10-9",
     description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto, voluptas dolores dignissimos eum odio minus voluptate. !",
+      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto.. !",
   },
 ];
 
