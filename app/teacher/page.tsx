@@ -13,7 +13,7 @@ const page = () => {
         </div>
       </div>
       <div className="w-full xl:w-1/3 lg:h-[120vh] flex flex-col gap-8">
-         {/* <EventCalendar /> */}
+      
         <Announcement />
       </div>
     </div>
