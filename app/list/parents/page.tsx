@@ -1,7 +1,7 @@
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { parentsData, role, teachersData } from "@/lib/data";
+import { parentsData, role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -61,7 +61,7 @@ const page = () => {
         <div className="flex items-center gap-2 ">
           <Link href={`/list/teachers/${item.id}`}>
             <button className="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
-              <Image src="/view.png" width={16} height={16} alt="" />
+              <Image src="/edit.png" width={16} height={16} alt="" />
             </button>
           </Link>
           {role === "admin" && (

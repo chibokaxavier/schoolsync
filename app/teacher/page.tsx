@@ -1,6 +1,5 @@
 import Announcement from "@/components/Announcement";
 import BigCalendar from "@/components/BigCalendar";
-import EventCalendar from "@/components/EventCalendar";
 import React from "react";
 
 const page = () => {
