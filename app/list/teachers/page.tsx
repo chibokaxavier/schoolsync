@@ -82,8 +82,14 @@ const page = () => {
       <td>
         <div className="flex items-center gap-2 ">
           <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
-              <Image src="/view.png" width={16} height={16} alt="" />
+            <button className="cursor-pointer w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
+              <Image
+                src="/view.png"
+                width={16}
+                height={16}
+                alt=""
+                className="cursor-pointer"
+              />
             </button>
           </Link>
           {role === "admin" && (
