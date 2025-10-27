@@ -109,7 +109,7 @@ const page = () => {
           </div>
         </div>
         {/* bottom */}
-        <div>Teacher's Schedule</div>
+        <div>Teacher&apos;s Schedule</div>
       </div>
       {/* right */}
       <div className="w-full xl:w-1/3">r</div>
