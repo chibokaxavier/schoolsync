@@ -1,3 +1,5 @@
+import Announcement from "@/components/Announcement";
+import BigCalendar from "@/components/BigCalendar";
 import Image from "next/image";
 import React from "react";
 
@@ -109,10 +111,14 @@ const page = () => {
           </div>
         </div>
         {/* bottom */}
-        <div>Teacher&apos;s Schedule</div>
+        <div className="mt-4 bg-white rounded-md p-4 h-[800px] ">
+          <h1>Teacher&apos;s Schedule</h1> <BigCalendar />
+        </div>
       </div>
       {/* right */}
-      <div className="w-full xl:w-1/3">r</div>
+      <div className="w-full xl:w-1/3">
+        <Announcement />
+      </div>
     </div>
   );
 };
