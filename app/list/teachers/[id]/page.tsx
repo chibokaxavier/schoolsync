@@ -5,145 +5,132 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const page = () => {
+const SingleTeacherPage = () => {
   return (
-    <div className="flex-1 p-4 gap-4 flex flex-col xl:flex-row">
-      {/* left */}
-      <div className="w-full xl:w-2/3">
-        {/* top */}
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* User info card */}
-          <div className="bg-blue-100 py-6 px-4 rounded-md flex-1 flex gap-4">
-            <div className="w-2/3">
-              {" "}
-              <Image
-                src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg"
-                width={144}
-                height={144}
-                alt=""
-                className="object-cover rounded-full w-36 h-36 "
-              />
-            </div>
-            <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">Leornado Da Vinci</h1>{" "}
-              <p className="text-sm text-gray-500">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et
-                autem
-              </p>
-              <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium ">
-                <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
-                  <Image src="/blood.png" width={14} height={14} alt="" />
-                  <span>A+</span>
-                </div>{" "}
-                <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
-                  <Image src="/date.png" width={14} height={14} alt="" />
-                  <span>January 2025</span>
-                </div>{" "}
-                <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
-                  <Image src="/mail.png" width={14} height={14} alt="" />
-                  <span>user@gmail.com</span>
-                </div>{" "}
-                <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
-                  <Image src="/phone.png" width={14} height={14} alt="" />
-                  <span>+1 234 5682</span>
-                </div>
+    <div className="flex-1 p-4 md:p-6 lg:px-8 flex flex-col gap-6 text-gray-800">
+
+      {/* 1. HERO PROFILE SECTION WITH EMBEDDED STATS */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-8 items-center md:items-stretch">
+        {/* Profile Image & Basic Info */}
+        <div className="w-full md:w-1/3 flex flex-col items-center justify-center gap-4 text-center md:border-r border-gray-100 pr-0 md:pr-8">
+          <div className="relative w-32 h-32">
+            <Image
+              src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg"
+              alt=""
+              fill
+              className="rounded-full object-cover ring-4 ring-lamaSkyLight"
+            />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Leornado Da Vinci</h1>
+            <p className="text-sm font-medium text-gray-500 mt-1">Math & Physics Teacher</p>
+            <div className="flex gap-2 justify-center mt-3">
+              <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center hover:bg-lamaSkyLight transition-colors cursor-pointer">
+                <Image src="/mail.png" width={14} height={14} alt="" />
               </div>
+              <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center hover:bg-lamaPurpleLight transition-colors cursor-pointer">
+                <Image src="/phone.png" width={14} height={14} alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bio & Integrated Stats */}
+        <div className="w-full md:w-2/3 flex flex-col justify-between gap-6">
+          {/* Bio */}
+          <div>
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Biography</h2>
+            <p className="text-sm text-gray-600 leading-relaxed">
+              A dedicated and experienced educator specializing in Mathematics and Physics. Committed to fostering a positive learning environment and encouraging creative problem solving among students. Awarded "Teacher of the Year" in 2023.
+            </p>
+          </div>
+
+          {/* Integrated Stats Row */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-4 bg-gray-50 rounded-xl flex items-center gap-3 hover:bg-lamaSkyLight transition-colors group">
+              <Image src="/singleAttendance.png" width={24} height={24} alt="" className="opacity-50 group-hover:opacity-100" />
+              <div>
+                <h1 className="text-lg font-bold text-gray-800">90%</h1>
+                <p className="text-[10px] text-gray-500 font-medium uppercase">Attendance</p>
+              </div>
+            </div>
+            <div className="p-4 bg-gray-50 rounded-xl flex items-center gap-3 hover:bg-lamaPurpleLight transition-colors group">
+              <Image src="/singleBranch.png" width={24} height={24} alt="" className="opacity-50 group-hover:opacity-100" />
+              <div>
+                <h1 className="text-lg font-bold text-gray-800">2</h1>
+                <p className="text-[10px] text-gray-500 font-medium uppercase">Branches</p>
+              </div>
+            </div>
+            <div className="p-4 bg-gray-50 rounded-xl flex items-center gap-3 hover:bg-lamaYellowLight transition-colors group">
+              <Image src="/singleLesson.png" width={24} height={24} alt="" className="opacity-50 group-hover:opacity-100" />
+              <div>
+                <h1 className="text-lg font-bold text-gray-800">18</h1>
+                <p className="text-[10px] text-gray-500 font-medium uppercase">Lessons</p>
+              </div>
+            </div>
+            <div className="p-4 bg-gray-50 rounded-xl flex items-center gap-3 hover:bg-pink-50 transition-colors group">
+              <Image src="/singleClass.png" width={24} height={24} alt="" className="opacity-50 group-hover:opacity-100" />
+              <div>
+                <h1 className="text-lg font-bold text-gray-800">6</h1>
+                <p className="text-[10px] text-gray-500 font-medium uppercase">Classes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. GRID CONTENT */}
+      <div className="flex flex-col xl:flex-row gap-6">
+
+        {/* MAIN SCHEDULE COLUMN (Left - 2/3) */}
+        <div className="w-full xl:w-2/3 flex flex-col gap-6">
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 h-[700px]">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-xl font-bold text-gray-800">Class Schedule</h1>
+              <div className="flex gap-2">
+                <span className="w-3 h-3 rounded-full bg-lamaSky"></span>
+                <span className="text-xs text-gray-500">Classes</span>
+                <span className="w-3 h-3 rounded-full bg-lamaPurple ml-2"></span>
+                <span className="text-xs text-gray-500">Exams</span>
+              </div>
+            </div>
+            <BigCalendar />
+          </div>
+        </div>
+
+        {/* SIDEBAR COLUMN (Right - 1/3) */}
+        <div className="w-full xl:w-1/3 flex flex-col gap-6">
+          {/* Quick Actions */}
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+            <h1 className="text-xl font-bold text-gray-800 mb-6">Quick Actions</h1>
+            <div className="flex flex-col gap-3">
+              <Link href="#" className="flex items-center justify-between p-3 bg-lamaSkyLight rounded-xl text-sm font-semibold text-gray-700 hover:opacity-80 transition-opacity">
+                <span>View Enrolled Students</span>
+                <Image src="/arrowRight.png" width={14} height={14} alt="" className="opacity-50" />
+              </Link>
+              <Link href="#" className="flex items-center justify-between p-3 bg-lamaPurpleLight rounded-xl text-sm font-semibold text-gray-700 hover:opacity-80 transition-opacity">
+                <span>Assign Homework</span>
+                <Image src="/arrowRight.png" width={14} height={14} alt="" className="opacity-50" />
+              </Link>
+              <Link href="#" className="flex items-center justify-between p-3 bg-lamaYellowLight rounded-xl text-sm font-semibold text-gray-700 hover:opacity-80 transition-opacity">
+                <span>View Exam Results</span>
+                <Image src="/arrowRight.png" width={14} height={14} alt="" className="opacity-50" />
+              </Link>
             </div>
           </div>
 
-          {/* smaller cards */}
-          <div className="flex-1 flex gap-4 justify-between flex-wrap ">
-            {/* card */}
-            <div className="w-full bg-white p-4 rounded-md  flex gap-4 md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
-              <Image
-                src="/singleAttendance.png"
-                alt=""
-                width={24}
-                height={24}
-                className="size-6"
-              />
-              <div className="">
-                <h1 className="text-xl font-semibold">90%</h1>
-                <span className="text-sm text-gray-400">Attendance</span>
-              </div>
-            </div>
-            {/* card */}
-            <div className="w-full bg-white p-4 rounded-md flex gap-4 md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
-              <Image
-                src="/singleBranch.png"
-                alt=""
-                width={24}
-                height={24}
-                className="size-6"
-              />
-              <div className="">
-                <h1 className="text-xl font-semibold">2</h1>
-                <span className="text-sm text-gray-400">Branches</span>
-              </div>
-            </div>
-            {/* card */}
-            <div className="w-full bg-white p-4 rounded-md  flex gap-4 md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
-              <Image
-                src="/singleLesson.png"
-                alt=""
-                width={24}
-                height={24}
-                className="size-6"
-              />
-              <div className="">
-                <h1 className="text-xl font-semibold">6</h1>
-                <span className="text-sm text-gray-400">Lessons</span>
-              </div>
-            </div>
+          {/* Performance Chart */}
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+            <h1 className="text-xl font-bold text-gray-800 mb-4">Performance</h1>
+            <Performance />
+          </div>
 
-            {/* card */}
-            <div className="w-full bg-white p-4 rounded-md  flex gap-4 md:w-[48%] xl:w-[45%] 2xl:w-[48%] ">
-              <Image
-                src="/singleClass.png"
-                alt=""
-                width={24}
-                height={24}
-                className="size-6"
-              />
-              <div className="">
-                <h1 className="text-xl font-semibold">6</h1>
-                <span className="text-sm text-gray-400">Classes</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* bottom */}
-        <div className="mt-4 bg-white rounded-md p-4 h-[800px] ">
-          <h1>Teacher&apos;s Schedule</h1> <BigCalendar />
+          <Announcement />
         </div>
       </div>
-      {/* right */}
-      <div className="w-full  xl:w-1/3">
-        <div className="bg-white p-4 mb-5 rounded-md ">
-          <h1 className="text-xl font-semibold ">Shortcuts</h1>
-          <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
-            <Link className="p-3 bg-amber-100 rounded-md" href="/">
-              Teacher&apos;s Classes{" "}
-            </Link>{" "}
-            <Link className="p-3 bg-green-100 rounded-md" href="/">
-              Teacher&apos;s Students{" "}
-            </Link>{" "}
-            <Link className="p-3 bg-red-100 rounded-md" href="/">
-              Teacher&apos;s Lessons{" "}
-            </Link>{" "}
-            <Link className="p-3 bg-blue-100  rounded-md" href="/">
-              Teacher&apos;s Exams{" "}
-            </Link>{" "}
-            <Link className="p-3 bg-pink-100 rounded-md" href="/">
-              Teacher&apos;s Assignments{" "}
-            </Link>
-          </div>
-        </div>
-        <Performance />
-        <Announcement />
-      </div>
+
     </div>
   );
 };
 
-export default page;
+export default SingleTeacherPage;

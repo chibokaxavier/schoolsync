@@ -11,24 +11,21 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 const events = [
   {
     id: 1,
-    title: "Lorem ipsom delorr",
-    time: "12:00 PM - 2:00 PM",
-    description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto, voluptas dolores dignissimos eum odio minus voluptate. !",
+    title: "Math Olympiad",
+    time: "09:00 AM - 12:00 PM",
+    description: "The regional Math Olympiad will take place in the main auditorium. Good luck to all participants!",
   },
   {
     id: 2,
-    title: "Lorem ipsom delorr",
-    time: "12:00 PM - 2:00 PM",
-    description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto, voluptas dolores dignissimos eum odio minus voluptate. !",
+    title: "Staff Meeting",
+    time: "03:00 PM - 04:30 PM",
+    description: "Mandatory staff meeting to discuss the upcoming curriculum changes and event schedules.",
   },
   {
     id: 3,
-    title: "Lorem ipsom delorr",
-    time: "12:00 PM - 2:00 PM",
-    description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto, voluptas dolores dignissimos eum odio minus voluptate. !",
+    title: "Basketball Match",
+    time: "04:00 PM - 06:00 PM",
+    description: "Come cheer for our school team in the finals against Lincoln High at the sports complex.",
   },
 ];
 

@@ -11,24 +11,21 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 const events = [
   {
     id: 1,
-    title: "Lorem ipsom delorr",
-    time: "2025-10-9",
-    description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architect. !",
+    title: "Science Fair Registration",
+    time: "2025-02-15",
+    description: "Registration for the annual Science Fair is now open! Submit your project proposals by the end of the month to participate.",
   },
   {
     id: 2,
-    title: "Lorem ipsom delorr",
-    time: "2025-10-9",
-    description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto. !",
+    title: "Parent-Teacher Conference",
+    time: "2025-03-10",
+    description: "Join us for the semester's parent-teacher conferences. Please book your slots in advance through the portal.",
   },
   {
     id: 3,
-    title: "Lorem ipsom delorr",
-    time: "2025-10-9",
-    description:
-      "     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis blanditiis architecto.. !",
+    title: "Spring Break Holiday",
+    time: "2025-04-01",
+    description: "School will be closed for Spring Break from April 1st to April 7th. Enjoy your holiday!",
   },
 ];
 

@@ -24,24 +24,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jamjuree.variable}  antialiased`}>
-        
-         <div className=" flex ">
-              <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] px-5 ">
-                <Link href={"/"} className="items-center flex pt-5  gap-2">
-                  <NotebookPen size={32} />
-                  <p className="hidden lg:block font-semibold text-lg">SchoolSync</p>
-                </Link>
-                <Menu />
+      <body className={`${jamjuree.variable} antialiased bg-bg-light text-gray-800`}>
+        <div className="flex h-screen overflow-hidden">
+          {/* Sidebar */}
+          <div className="w-[14%] md:w-[12%] lg:w-[20%] xl:w-[20%] p-4 overflow-y-auto hidden md:block bg-white shadow-lg z-10">
+            <Link href="/" className="flex items-center justify-center lg:justify-start gap-2 mb-4">
+              <div className="bg-primary/10 p-2 rounded-lg">
+                <NotebookPen size={28} className="text-primary" />
               </div>
-              <div className="w-[86%] md:w-[92%] lg:w-[84%] flex flex-col xl:w-[86%] bg-[#F7F8FA] ">
-                <Navbar />
-                {children}
-              </div>
-            </div>
-        
-        {/* {children} */}
-        </body>
+              <span className="hidden lg:block font-bold text-xl tracking-tight text-gray-900">SchoolSync</span>
+            </Link>
+            <Menu />
+          </div>
+
+          {/* Main Content */}
+          <div className="w-full md:w-[88%] lg:w-[80%] xl:w-[80%] bg-[#F7F8FA] overflow-y-auto flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
+        </div>
+      </body>
     </html>
   );
 }

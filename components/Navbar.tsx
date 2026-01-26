@@ -3,32 +3,40 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="flex items-center justify-between p-4">
-      <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-gray-300 px-2 ring-[1.5px]  ">
-        <Image src="/search.png" alt="" width={14} height={14} />
-        <input type="text" placeholder="Search..." className="w-[200px] outline-none p-2 bg-transparent" />
+    <div className="flex items-center justify-between p-4 md:p-6 lg:px-8 w-full">
+      {/* SEARCH BAR */}
+      <div className="hidden md:flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-200 px-3 py-2 bg-white/80 backdrop-blur-sm shadow-sm hover:ring-primary/20 transition-all">
+        <Image src="/search.png" alt="" width={14} height={14} className="opacity-50" />
+        <input
+          type="text"
+          placeholder="Search..."
+          className="w-[200px] outline-none bg-transparent text-gray-600 placeholder:text-gray-400"
+        />
       </div>
-      <div className="flex items-center gap-6 justify-end w-full">
-        <div className="bg-white rounded-full size-7 flex items-center justify-center ">
+
+      {/* ICONS AND USER */}
+      <div className="flex items-center gap-6 justify-end w-full md:w-auto">
+        <div className="bg-white rounded-full size-9 flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
           <Image src="/message.png" alt="" width={20} height={20} />
-        </div>{" "}
-        <div className="bg-white relative  rounded-full size-7 flex items-center justify-center ">
+        </div>
+        <div className="bg-white relative rounded-full size-9 flex items-center justify-center shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
           <Image src="/announcement.png" alt="" width={20} height={20} />
-          <div className="absolute -top-3 -right-3 size-5 flex items-center justify-center bg-purple-500 text-white text-xs rounded-full">
+          <div className="absolute -top-1.5 -right-1.5 size-4 flex items-center justify-center bg-purple-500 text-white text-[10px] font-bold rounded-full">
             1
           </div>
         </div>
-        <div className="flex flex-col ">
-          <span className="text-xs leading-3 font-medium">John Doe</span>
-          <span className="text-[10px] text-gray-500 text-right">Admin</span>
+        <div className="flex flex-col text-right">
+          <span className="text-sm font-semibold leading-tight text-gray-700">John Doe</span>
+          <span className="text-[10px] text-gray-400 font-medium uppercase">Admin</span>
         </div>
-        <Image
-          src="/avatar.png"
-          alt=""
-          width={36}
-          height={36}
-          className="rounded-full"
-        />
+        <div className="size-9 relative rounded-full ring-2 ring-white shadow-sm">
+          <Image
+            src="/avatar.png"
+            alt=""
+            fill
+            className="rounded-full object-cover"
+          />
+        </div>
       </div>
     </div>
   );
