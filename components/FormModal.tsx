@@ -172,6 +172,54 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                             </Select>
                         </div>
                     </div>
+                ) : table === "class" && (type === "create" || type === "update") ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Grade Level */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Grade Level</Label>
+                            <Select>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Grade" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="JSS1">JSS 1</SelectItem>
+                                    <SelectItem value="JSS2">JSS 2</SelectItem>
+                                    <SelectItem value="JSS3">JSS 3</SelectItem>
+                                    <SelectItem value="SS1">SS 1</SelectItem>
+                                    <SelectItem value="SS2">SS 2</SelectItem>
+                                    <SelectItem value="SS3">SS 3</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Stream */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Stream</Label>
+                            <Select>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Stream" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="A">A</SelectItem>
+                                    <SelectItem value="B">B</SelectItem>
+                                    <SelectItem value="C">C</SelectItem>
+                                    <SelectItem value="D">D</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Capacity */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Capacity</Label>
+                            <Input type="number" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 25" />
+                        </div>
+
+                        {/* Supervisor */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Supervisor</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Teacher Name" />
+                        </div>
+                    </div>
                 ) : (
                     // Default/Fallback or other forms
                     <div className="flex flex-col gap-4">
