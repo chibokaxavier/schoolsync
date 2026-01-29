@@ -1,7 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import { Plus, Trash, Pencil, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -25,6 +34,7 @@ interface FormModalProps {
 }
 
 const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
+    const Icon = type === "create" ? Plus : type === "update" ? Pencil : Trash;
     const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
     const bgColor =
         type === "create"
@@ -51,51 +61,115 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
         return (
             <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); setOpen(false); }}>
                 {table === "student" && type === "create" ? (
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Name Fields */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-500">First Name</label>
-                            <input type="text" className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full" placeholder="John" />
+                            <Label className="text-sm text-gray-500">First Name</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="John" />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-500">Last Name</label>
-                            <input type="text" className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full" placeholder="Doe" />
+                            <Label className="text-sm text-gray-500">Last Name</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Doe" />
                         </div>
 
                         {/* Admission Number */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-500">Admission Number (Username)</label>
-                            <input type="text" className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full" placeholder="2025001" />
+                            <Label className="text-sm text-gray-500">Admission Number (Username)</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="2025001" />
                         </div>
 
                         {/* Class */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-500">Class</label>
-                            <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full">
-                                <option value="">Select Class</option>
-                                <option value="JSS1">JSS1</option>
-                                <option value="JSS2">JSS2</option>
-                                <option value="JSS3">JSS3</option>
-                                <option value="SS1">SS1</option>
-                                <option value="SS2">SS2</option>
-                                <option value="SS3">SS3</option>
-                            </select>
+                            <Label className="text-sm text-gray-500">Class</Label>
+                            <Select>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Class" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="JSS1">JSS1</SelectItem>
+                                    <SelectItem value="JSS2">JSS2</SelectItem>
+                                    <SelectItem value="JSS3">JSS3</SelectItem>
+                                    <SelectItem value="SS1">SS1</SelectItem>
+                                    <SelectItem value="SS2">SS2</SelectItem>
+                                    <SelectItem value="SS3">SS3</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
 
                         {/* Gender */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-500">Gender</label>
-                            <select className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full">
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
+                            <Label className="text-sm text-gray-500">Gender</Label>
+                            <Select>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Gender" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="male">Male</SelectItem>
+                                    <SelectItem value="female">Female</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
 
                         {/* Parent Link */}
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm text-gray-500">Parent Phone/Email</label>
-                            <input type="text" className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full" placeholder="+1234567890" />
+                            <Label className="text-sm text-gray-500">Parent Phone/Email</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" />
+                        </div>
+                    </div>
+                ) : table === "teacher" && type === "create" ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Name Fields */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">First Name</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Jane" />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Last Name</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Smith" />
+                        </div>
+
+                        {/* Employee ID */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Employee ID (Username)</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="T2025001" />
+                        </div>
+
+                        {/* Phone/Email */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Phone/Email</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" />
+                        </div>
+
+                        {/* Subjects */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Subject(s)</Label>
+                            <Select>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Subject" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Math">Math</SelectItem>
+                                    <SelectItem value="English">English</SelectItem>
+                                    <SelectItem value="Science">Science</SelectItem>
+                                    <SelectItem value="History">History</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Classes */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Class(es)</Label>
+                            <Select>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Class" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="JSS1">JSS1</SelectItem>
+                                    <SelectItem value="SS3">SS3</SelectItem>
+                                    <SelectItem value="All">All</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 ) : (
@@ -122,7 +196,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                 <button
                     className={`${size} flex items-center justify-center rounded-full ${bgColor} cursor-pointer`}
                 >
-                    <Image src={`/${type}.png`} alt="" width={16} height={16} />
+                    <Icon className="w-4 h-4 text-gray-700" />
                 </button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-white">

@@ -7,6 +7,7 @@ import { role, teachersData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
+import { Eye, Filter, SortAsc, Plus } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +31,7 @@ type Teacher = {
 
 const columns = [
   {
-    header: "Info",
+    header: "Name",
     accessor: "info",
   },
   {
@@ -51,11 +52,6 @@ const columns = [
   {
     header: "Phone",
     accessor: "phone",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Address",
-    accessor: "address",
     className: "hidden lg:table-cell",
   },
   {
@@ -122,12 +118,11 @@ const TeacherListPage = () => {
       <td className="hidden md:table-cell">{item.subjects.join(",")}</td>
       <td className="hidden md:table-cell">{item.classes.join(",")}</td>
       <td className="hidden md:table-cell">{item.phone}</td>
-      <td className="hidden md:table-cell">{item.address}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky">
-              <Image src="/view.png" alt="" width={16} height={16} />
+            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky text-white">
+              <Eye className="w-4 h-4" />
             </button>
           </Link>
           {role === "admin" && (
@@ -151,7 +146,7 @@ const TeacherListPage = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow cursor-pointer">
-                  <Image src="/filter.png" alt="" width={14} height={14} />
+                  <Filter className="w-4 h-4 text-gray-700" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white">
@@ -172,7 +167,7 @@ const TeacherListPage = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow cursor-pointer">
-                  <Image src="/sort.png" alt="" width={14} height={14} />
+                  <SortAsc className="w-4 h-4 text-gray-700" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white">
