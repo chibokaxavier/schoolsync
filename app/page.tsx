@@ -31,16 +31,16 @@ const Homepage = () => {
                 <h2 className="text-xl font-bold text-gray-800 mt-2">Overview</h2>
                 <div className="flex gap-4 justify-between flex-wrap">
                     <Link href="/list/students" className="flex-1 min-w-[130px] hover:no-underline">
-                        <UserCard type="student" />
+                        <UserCard type="Total Students" count="3,450" />
                     </Link>
                     <Link href="/list/teachers" className="flex-1 min-w-[130px] hover:no-underline">
-                        <UserCard type="teacher" />
+                        <UserCard type="Total Teachers" count="120" />
                     </Link>
                     <Link href="/list/parents" className="flex-1 min-w-[130px] hover:no-underline">
-                        <UserCard type="parent" />
+                        <UserCard type="Total Parents" count="2,800" />
                     </Link>
                     <div className="flex-1 min-w-[130px]">
-                        <UserCard type="staff" />
+                        <UserCard type="Total Fees Collected" count="$150,000" subtitle="This Term" />
                     </div>
                 </div>
 
@@ -62,32 +62,44 @@ const Homepage = () => {
                     ))}
                 </div>
 
-                {/* PENDING ACTIONS */}
-                <h2 className="text-xl font-bold text-gray-800 mt-2">Pending Actions</h2>
+                {/* RECENT ACTIVITY */}
+                <h2 className="text-xl font-bold text-gray-800 mt-2">Recent Activity</h2>
                 <div className="flex flex-col gap-4">
                     <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-full bg-lamaPurpleLight flex items-center justify-center text-lamaPurple">
-                                <Image src="/msg.png" width={20} height={20} alt="" className="opacity-60" />
+                                <Image src="/student.png" width={20} height={20} alt="" className="opacity-60" />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-gray-700">Approve Leave Requests</h3>
-                                <p className="text-xs text-gray-500">5 pending requests from teachers</p>
+                                <h3 className="font-semibold text-gray-700">Student Added</h3>
+                                <p className="text-xs text-gray-500">Student 'John Doe' was just added</p>
                             </div>
                         </div>
-                        <button className="text-sm text-gray-400 font-medium hover:text-gray-800">Review</button>
+                        <span className="text-xs text-gray-400">2 mins ago</span>
                     </div>
                     <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-full bg-lamaYellowLight flex items-center justify-center text-lamaYellow">
+                                <Image src="/teacher.png" width={20} height={20} alt="" className="opacity-60" />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-700">Result Uploaded</h3>
+                                <p className="text-xs text-gray-500">Teacher 'Mrs. Smith' uploaded a result</p>
+                            </div>
+                        </div>
+                        <span className="text-xs text-gray-400">10 mins ago</span>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-lamaSkyLight flex items-center justify-center text-lamaSky">
                                 <Image src="/finance.png" width={20} height={20} alt="" className="opacity-60" />
                             </div>
                             <div>
-                                <h3 className="font-semibold text-gray-700">Audit Finance Logs</h3>
-                                <p className="text-xs text-gray-500">Weekly financial report is ready</p>
+                                <h3 className="font-semibold text-gray-700">Fees Received</h3>
+                                <p className="text-xs text-gray-500">Parent 'Mr. Johnson' paid school fees</p>
                             </div>
                         </div>
-                        <button className="text-sm text-gray-400 font-medium hover:text-gray-800">Check</button>
+                        <span className="text-xs text-gray-400">1 hour ago</span>
                     </div>
                 </div>
             </div>

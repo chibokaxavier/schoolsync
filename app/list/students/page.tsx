@@ -1,3 +1,4 @@
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -20,7 +21,7 @@ type Student = {
 
 const columns = [
   {
-    header: "Info",
+    header: "Name",
     accessor: "info",
   },
   {
@@ -29,23 +30,17 @@ const columns = [
     className: "hidden md:table-cell",
   },
   {
-    header: "Grade ",
-    accessor: "grade",
+    header: "Class",
+    accessor: "class",
     className: "hidden md:table-cell",
   },
-
   {
-    header: "Phone ",
-    accessor: "phone",
+    header: "Status",
+    accessor: "status",
     className: "hidden lg:table-cell",
   },
   {
-    header: "Address ",
-    accessor: "address",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Actions ",
+    header: "Actions",
     accessor: "actions",
   },
 ];
@@ -67,14 +62,17 @@ const page = () => {
         />
         <div className="flex flex-col">
           <h3 className="font-semibold">{item.name}</h3>
-          <p className="text-xs text-gray-500">{item.class}</p>
+          <p className="text-xs text-gray-500">{item.email}</p>
         </div>
       </td>
       <td className="hidden md:table-cell">{item.studentId}</td>
-      <td className="hidden md:table-cell">{item.grade}</td>
-
-      <td className="hidden md:table-cell">{item.phone}</td>
-      <td className="hidden md:table-cell">{item.address}</td>
+      <td className="hidden md:table-cell">{item.class}</td>
+      <td className="hidden lg:table-cell">
+        {/* Mock Status for now */}
+        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+          Active
+        </span>
+      </td>
       <td>
         <div className="flex items-center gap-2 ">
           <Link href={`/list/teachers/${item.id}`}>
@@ -83,9 +81,10 @@ const page = () => {
             </button>
           </Link>
           {role === "admin" && (
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100">
-              <Image src="/delete.png" width={16} height={16} alt="" />
-            </button>
+            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100">
+            //   <Image src="/delete.png" width={16} height={16} alt="" />
+            // </button>
+            <FormModal table="student" type="delete" id={item.id} />
           )}
         </div>
       </td>
@@ -106,9 +105,10 @@ const page = () => {
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>{" "}
             {role === "admin" && (
-              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
-                <Image src="/plus.png" width={14} height={14} alt="" />
-              </button>
+              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
+              //   <Image src="/plus.png" width={14} height={14} alt="" />
+              // </button>
+              <FormModal table="student" type="create" />
             )}
           </div>
         </div>
