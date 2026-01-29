@@ -1,14 +1,9 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
-const events = [
+// Default/Initial events data
+const initialEvents = [
   {
     id: 1,
     title: "Science Fair Registration",
@@ -26,26 +21,46 @@ const events = [
     title: "Spring Break Holiday",
     time: "2025-04-01",
     description: "School will be closed for Spring Break from April 1st to April 7th. Enjoy your holiday!",
+    target: "Everyone",
   },
 ];
 
-const Announcement = () => {
-  const [value, onChange] = useState<Value>(new Date());
+interface AnnouncementProps {
+  data?: {
+    id: number | string;
+    title: string;
+    time: string;
+    description: string;
+    target?: string;
+  }[];
+}
+
+const Announcement = ({ data }: AnnouncementProps) => {
+  // Use provided data or fallback to initialEvents
+  const displayEvents = data && data.length > 0 ? data : initialEvents;
+
   return (
     <div className="bg-white p-4 rounded-md">
       <div className="flex justify-between items-center">
         <h1 className="text-xl my-4 font-semibold">Announcements</h1>
         <p className="text-sm my-4 font-semibold">View more</p>
       </div>
-      <div className="flex flex-col gap-4 ">
-        {events.map((event, i) => (
+      <div className="flex flex-col gap-4">
+        {displayEvents.map((event, i) => (
           <div
-            className="p-5 rounded-md  odd:bg-[#CFCEFF] even:bg-[#FAE27C]"
-            key={i}
+            className="p-5 rounded-md odd:bg-lamaPurpleLight even:bg-lamaYellowLight"
+            key={event.id}
           >
             <div className="flex items-center justify-between">
               <h1 className="font-semibold text-gray-600">{event.title}</h1>
-              <span className=" p-1 bg-white text-gray-300  text-xs">{event.time}</span>
+              <div className="flex gap-2">
+                {event.target && (
+                  <span className="p-1 rounded-md bg-white text-xs text-gray-400 border border-gray-100">
+                    {event.target}
+                  </span>
+                )}
+                <span className="p-1 bg-white text-gray-300 text-xs rounded-md">{event.time}</span>
+              </div>
             </div>
             <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
           </div>

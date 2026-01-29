@@ -27,17 +27,13 @@ type Teacher = {
   subjects: string[];
   classes: string[];
   address: string;
+  status?: string;
 };
 
 const columns = [
   {
     header: "Name",
     accessor: "info",
-  },
-  {
-    header: "Teacher ID",
-    accessor: "teacherId",
-    className: "hidden md:table-cell",
   },
   {
     header: "Subjects",
@@ -52,6 +48,11 @@ const columns = [
   {
     header: "Phone",
     accessor: "phone",
+    className: "hidden lg:table-cell",
+  },
+  {
+    header: "Status",
+    accessor: "status",
     className: "hidden lg:table-cell",
   },
   {
@@ -111,13 +112,15 @@ const TeacherListPage = () => {
         />
         <div className="flex flex-col">
           <h3 className="font-semibold">{item.name}</h3>
-          <p className="text-xs text-gray-500">{item.email}</p>
+          <p className="text-xs text-gray-500">{item?.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.teacherId}</td>
       <td className="hidden md:table-cell">{item.subjects.join(",")}</td>
       <td className="hidden md:table-cell">{item.classes.join(",")}</td>
-      <td className="hidden md:table-cell">{item.phone}</td>
+      <td className="hidden lg:table-cell">{item.phone}</td>
+      <td className="hidden lg:table-cell">
+           <div className={`w-3 h-3 rounded-full ${item.status === "Active" ? "bg-green-500" : "bg-red-500"}`} title={item.status || "Active"} />
+      </td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>

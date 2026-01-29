@@ -1,10 +1,28 @@
+"use client";
+
 import EventCalendar from "@/components/EventCalendar";
 import UserCard from "@/components/UserCard";
 import Image from "next/image";
 import Link from "next/link";
 import Announcement from "@/components/Announcement";
+import BroadcastForm from "@/components/BroadcastForm";
+import { useState } from "react";
 
 const AdminPage = () => {
+  const [announcements, setAnnouncements] = useState<any[]>([]);
+
+  const handleBroadcast = (message: string, target: string, title?: string) => {
+    const newAnnouncement = {
+      id: Date.now(),
+      title: title || "New Broadcast",
+      time: new Date().toISOString().split('T')[0],
+      description: message,
+      target: target,
+    };
+    // Prepend to list
+    setAnnouncements((prev) => [newAnnouncement, ...prev]);
+  };
+
   return (
     <div className="p-4 md:p-6 lg:px-8 flex gap-4 flex-col md:flex-row h-full">
       {/* LEFT COLUMN - HERO & STATS */}
@@ -115,10 +133,11 @@ const AdminPage = () => {
 
       {/* RIGHT COLUMN - CALENDAR & NOTICES */}
       <div className="w-full lg:w-1/3 flex flex-col gap-8">
+        <BroadcastForm onBroadcast={handleBroadcast} />
         <div className="bg-white p-4 rounded-2xl shadow-sm">
           <EventCalendar />
         </div>
-        <Announcement />
+        <Announcement data={announcements} />
       </div>
     </div>
   );

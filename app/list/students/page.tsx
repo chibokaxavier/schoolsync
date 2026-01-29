@@ -17,6 +17,7 @@ type Student = {
   grade: number;
   class: string;
   address: string;
+  status?: string;
 };
 
 const columns = [
@@ -68,9 +69,8 @@ const page = () => {
       <td className="hidden md:table-cell">{item.studentId}</td>
       <td className="hidden md:table-cell">{item.class}</td>
       <td className="hidden lg:table-cell">
-        {/* Mock Status for now */}
-        <span className="px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-          Active
+        <span className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+          {item.status || "Active"}
         </span>
       </td>
       <td>
