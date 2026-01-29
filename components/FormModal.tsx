@@ -100,7 +100,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Gender */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Gender</Label>
-                            <Select>
+                            <Select name="gender">
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Gender" />
                                 </SelectTrigger>
@@ -114,7 +114,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Parent Link */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Parent Phone/Email</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" />
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="parentContact"/>
                         </div>
                     </div>
                 ) : table === "teacher" && type === "create" ? (
@@ -122,29 +122,29 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Name Fields */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">First Name</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Jane" />
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Jane" name="firstName"/>
                         </div>
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Last Name</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Smith" />
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Smith" name="lastName"/>
                         </div>
 
                         {/* Employee ID */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Employee ID (Username)</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="T2025001" />
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="T2025001" name="username"/>
                         </div>
 
                         {/* Phone/Email */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Phone/Email</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" />
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="phone"/>
                         </div>
 
                         {/* Subjects */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Subject(s)</Label>
-                            <Select>
+                            <Select name="subjects">
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Subject" />
                                 </SelectTrigger>
@@ -160,7 +160,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Classes */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Class(es)</Label>
-                            <Select>
+                            <Select name="classes">
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Class" />
                                 </SelectTrigger>
@@ -177,7 +177,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Grade Level */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Grade Level</Label>
-                            <Select>
+                            <Select name="grade">
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Grade" />
                                 </SelectTrigger>
@@ -195,7 +195,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Stream */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Stream</Label>
-                            <Select>
+                            <Select name="stream">
                                 <SelectTrigger className="w-full">
                                     <SelectValue placeholder="Select Stream" />
                                 </SelectTrigger>
@@ -211,13 +211,44 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Capacity */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Capacity</Label>
-                            <Input type="number" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 25" />
+                            <Input type="number" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 25" name="capacity"/>
                         </div>
 
                         {/* Supervisor */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Supervisor</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Teacher Name" />
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Teacher Name" name="supervisor"/>
+                        </div>
+                    </div>
+                ) : table === "subject" && (type === "create" || type === "update") ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Subject Name */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Subject Name</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="e.g. Mathematics" name="name" defaultValue={data?.name} />
+                        </div>
+
+                        {/* Teachers */}
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Teachers</Label>
+                            <Select name="teachers">
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Teacher" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {/* This is a simplified example. In a real app, you'd fetch teachers. */}
+                                    <SelectItem value="1">John Doe</SelectItem>
+                                    <SelectItem value="2">Jane Doe</SelectItem>
+                                    <SelectItem value="3">Mike Geller</SelectItem>
+                                    <SelectItem value="4">Jay French</SelectItem>
+                                    <SelectItem value="5">Jane Smith</SelectItem>
+                                    <SelectItem value="6">Anna Santiago</SelectItem>
+                                    <SelectItem value="7">Allen Black</SelectItem>
+                                    <SelectItem value="8">Ophelia Castro</SelectItem>
+                                    <SelectItem value="9">Derek Briggs</SelectItem>
+                                    <SelectItem value="10">John Glover</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 ) : (

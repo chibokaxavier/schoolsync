@@ -58,6 +58,7 @@ const AdminPage = () => {
             { label: "Add Student", icon: "/student.png", color: "bg-lamaSkyLight" },
             { label: "Add Teacher", icon: "/teacher.png", color: "bg-lamaPurpleLight" },
             { label: "Add Class", icon: "/student.png", color: "bg-lamaYellowLight", href: "/list/classes" }, // Reusing student icon, or maybe lesson
+            { label: "Add Subject", icon: "/teacher.png", color: "bg-lamaPurpleLight", href: "/list/subjects" },
             { label: "Create Event", icon: "/calendar.png", color: "bg-lamaYellowLight" },
             { label: "Send Message", icon: "/message.png", color: "bg-pink-50" },
           ].map((shortcut) => (

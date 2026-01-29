@@ -1,10 +1,13 @@
+"use client";
+
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, subjectsData } from "@/lib/data";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { SortAsc, Filter } from "lucide-react";
+import { useState } from "react";
 
 type Subject = {
   id: number;
@@ -14,8 +17,8 @@ type Subject = {
 
 const columns = [
   {
-    header: "Subject Name ",
-    accessor: "info",
+    header: "Subject Name",
+    accessor: "name",
   },
   {
     header: "Teachers",
@@ -23,31 +26,45 @@ const columns = [
     className: "hidden md:table-cell",
   },
   {
-    header: "Actions ",
+    header: "Actions",
     accessor: "action",
   },
 ];
 
-const page = () => {
+const SubjectListPage = () => {
+  const [data, setData] = useState<Subject[]>(subjectsData);
+
+  const handleDelete = (id: number) => {
+    setData(data.filter((item) => item.id !== id));
+  };
+
+  const handleCreate = (formData: any) => {
+    const newSubject: Subject = {
+      id: data.length + 1, // Simple ID generation
+      name: formData.name,
+      teachers: [formData.teachers || "John Doe"], // Default or map ID to name
+    };
+    setData([...data, newSubject]);
+  };
+
+  const handleUpdate = (formData: any, id: number) => {
+    setData(data.map(item => item.id === id ? { ...item, name: formData.name, teachers: [formData.teachers || item.teachers[0]] } : item));
+  };
+
   const renderRow = (item: Subject) => (
     <tr
       key={item.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-100 "
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
     >
-      <td className="flex items-center  gap-4 p-4"> {item.name}</td>
-      <td className="hidden md:table-cell"> {item.teachers.join(",")}</td>
-
+      <td className="flex items-center gap-4 p-4">{item.name}</td>
+      <td className="hidden md:table-cell">{item.teachers.join(", ")}</td>
       <td>
-        <div className="flex items-center gap-2 ">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
-              <Image src="/edit.png" width={16} height={16} alt="" />
-            </button>
-          </Link>
+        <div className="flex items-center gap-2">
           {role === "admin" && (
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100">
-              <Image src="/delete.png" width={16} height={16} alt="" />
-            </button>
+            <>
+              <FormModal table="subject" type="update" data={item} onSubmit={(formData) => handleUpdate(formData, item.id)} />
+              <FormModal table="subject" type="delete" id={item.id} action={() => handleDelete(item.id)} />
+            </>
           )}
         </div>
       </td>
@@ -56,33 +73,28 @@ const page = () => {
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      <div className="flex items-center justify-between ">
-        <h1 className="text-lg font-semibold hidden md:block">All Subjects</h1>
-        <div className="flex flex-col md:flex-row items-center gap-4  w-full md:w-auto">
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
+        <h1 className="hidden md:block text-lg font-semibold">All Subjects</h1>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
-              <Image src="/filter.png" width={14} height={14} alt="" />
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <Filter className="w-4 h-4 text-gray-700" />
             </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
-              <Image src="/sort.png" width={14} height={14} alt="" />
-            </button>{" "}
-            {role === "admin" && (
-              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
-                <Image src="/plus.png" width={14} height={14} alt="" />
-              </button>
-            )}
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <SortAsc className="w-4 h-4 text-gray-700" />
+            </button>
+            {role === "admin" && <FormModal table="subject" type="create" onSubmit={handleCreate} />}
           </div>
         </div>
       </div>
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={subjectsData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      <Table columns={columns} renderRow={renderRow} data={data} />
+      {/* PAGINATION */}
+      <Pagination />
     </div>
   );
 };
 
-export default page;
+export default SubjectListPage;
