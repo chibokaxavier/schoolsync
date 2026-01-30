@@ -64,9 +64,9 @@ const AdminPage = () => {
           <Link href="/list/parents" className="flex-1 min-w-[130px] hover:no-underline">
             <UserCard type="Total Parents" count="2,800" />
           </Link>
-          <div className="flex-1 min-w-[130px]">
+          <Link href="/list/payments" className="flex-1 min-w-[130px] hover:no-underline">
             <UserCard type="Total Fees Collected" count="$150,000" subtitle="This Term" />
-          </div>
+          </Link>
         </div>
 
         {/* SHORTCUTS GRID */}
@@ -74,8 +74,9 @@ const AdminPage = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "Add Student", icon: "/student.png", color: "bg-lamaSkyLight" },
-            { label: "Add Teacher", icon: "/teacher.png", color: "bg-lamaPurpleLight" },
-            { label: "Add Class", icon: "/student.png", color: "bg-lamaYellowLight", href: "/list/classes" }, // Reusing student icon, or maybe lesson
+            { label: "Payment Tracking", icon: "/finance.png", color: "bg-pink-50", href: "/list/payments" },
+            { label: "Fee Structure", icon: "/finance.png", color: "bg-lamaSkyLight", href: "/list/fees" },
+            { label: "Add Class", icon: "/student.png", color: "bg-lamaYellowLight", href: "/list/classes" },
             { label: "Add Subject", icon: "/teacher.png", color: "bg-lamaPurpleLight", href: "/list/subjects" },
             { label: "Create Event", icon: "/calendar.png", color: "bg-lamaYellowLight" },
             { label: "Send Message", icon: "/message.png", color: "bg-pink-50" },
@@ -84,7 +85,7 @@ const AdminPage = () => {
               <div className="bg-white p-2 rounded-full">
                 <Image src={shortcut.icon} width={24} height={24} alt="" />
               </div>
-              <span className="font-semibold text-sm text-gray-600">{shortcut.label}</span>
+              <span className="font-semibold text-sm text-gray-600 text-center">{shortcut.label}</span>
             </Link>
           ))}
         </div>

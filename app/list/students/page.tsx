@@ -1,3 +1,5 @@
+"use client";
+
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -5,7 +7,7 @@ import TableSearch from "@/components/TableSearch";
 import { role, studentsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 type Student = {
   id: number;
@@ -46,7 +48,24 @@ const columns = [
   },
 ];
 
-const page = () => {
+const grades = [
+  { label: "All", value: 0 },
+  { label: "JSS 1", value: 7 },
+  { label: "JSS 2", value: 8 },
+  { label: "JSS 3", value: 9 },
+  { label: "SS 1", value: 10 },
+  { label: "SS 2", value: 11 },
+  { label: "SS 3", value: 12 },
+];
+
+const StudentListPage = () => {
+  const [selectedGrade, setSelectedGrade] = useState(0);
+
+  const filteredData =
+    selectedGrade === 0
+      ? studentsData
+      : studentsData.filter((s) => s.grade === selectedGrade);
+
   const renderRow = (item: Student) => (
     <tr
       key={item.id}
@@ -69,7 +88,12 @@ const page = () => {
       <td className="hidden md:table-cell">{item.studentId}</td>
       <td className="hidden md:table-cell">{item.class}</td>
       <td className="hidden lg:table-cell">
-        <span className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Active" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+        <span
+          className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Active"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+            }`}
+        >
           {item.status || "Active"}
         </span>
       </td>
@@ -81,9 +105,6 @@ const page = () => {
             </button>
           </Link>
           {role === "admin" && (
-            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-purple-100">
-            //   <Image src="/delete.png" width={16} height={16} alt="" />
-            // </button>
             <FormModal table="student" type="delete" id={item.id} />
           )}
         </div>
@@ -93,7 +114,7 @@ const page = () => {
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between mb-4">
         <h1 className="text-lg font-semibold hidden md:block">All Students</h1>
         <div className="flex flex-col md:flex-row items-center gap-4  w-full md:w-auto">
           <TableSearch />
@@ -104,17 +125,29 @@ const page = () => {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>{" "}
-            {role === "admin" && (
-              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 ">
-              //   <Image src="/plus.png" width={14} height={14} alt="" />
-              // </button>
-              <FormModal table="student" type="create" />
-            )}
+            {role === "admin" && <FormModal table="student" type="create" />}
           </div>
         </div>
       </div>
+
+      {/* GRADE TABS */}
+      <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+        {grades.map((grade) => (
+          <button
+            key={grade.value}
+            onClick={() => setSelectedGrade(grade.value)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGrade === grade.value
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+          >
+            {grade.label}
+          </button>
+        ))}
+      </div>
+
       <div>
-        <Table columns={columns} renderRow={renderRow} data={studentsData} />
+        <Table columns={columns} renderRow={renderRow} data={filteredData} />
       </div>
       <div>
         <Pagination />
@@ -123,4 +156,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default StudentListPage;
