@@ -1,7 +1,9 @@
-import { role } from "@/lib/data";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const menuItems = [
   {
@@ -127,6 +129,9 @@ const menuItems = [
 ];
 
 const Menu = () => {
+  const { user } = useAuth();
+  const { role } = user;
+
   return (
     <div className="mt-4 text-sm">
       {menuItems.map((item) => (

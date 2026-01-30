@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { NotebookPen } from "lucide-react";
 import Menu from "@/components/Menu";
+import { AuthProvider } from "@/context/AuthContext";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const jamjuree = Bai_Jamjuree({
   variable: "--font-jamjuree",
@@ -24,27 +26,36 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jamjuree.variable} antialiased bg-bg-light text-gray-800`}>
-        <div className="flex h-screen overflow-hidden">
-          {/* Sidebar */}
-          <div className="w-[14%] md:w-[12%] lg:w-[20%] xl:w-[20%] p-4 overflow-y-auto hidden md:block bg-white shadow-lg z-10">
-            <Link href="/" className="flex items-center justify-center lg:justify-start gap-2 mb-4">
-              <div className="bg-primary/10 p-2 rounded-lg">
-                <NotebookPen size={28} className="text-primary" />
+      <body className={`${jamjuree.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <div className="flex h-screen overflow-hidden bg-background">
+              {/* Sidebar */}
+              <div className="w-[14%] md:w-[12%] lg:w-[20%] xl:w-[18%] p-4 overflow-y-auto hidden md:block bg-card shadow-lg z-10 border-r">
+                <Link href="/" className="flex items-center justify-center lg:justify-start gap-2 mb-4">
+                  <div className="bg-primary/10 p-2 rounded-lg">
+                    <NotebookPen size={28} className="text-primary" />
+                  </div>
+                  <span className="hidden lg:block font-bold text-xl tracking-tight text-gray-900">SchoolSync</span>
+                </Link>
+                <Menu />
               </div>
-              <span className="hidden lg:block font-bold text-xl tracking-tight text-gray-900">SchoolSync</span>
-            </Link>
-            <Menu />
-          </div>
 
-          {/* Main Content */}
-          <div className="w-full md:w-[88%] lg:w-[80%] xl:w-[80%] bg-[#F7F8FA] overflow-y-auto flex flex-col">
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-          </div>
-        </div>
+              {/* Main Content */}
+              <div className="w-full md:w-[88%] lg:w-[80%] xl:w-[82%] bg-background overflow-y-auto flex flex-col">
+                <Navbar />
+                <main className="flex-1">
+                  {children}
+                </main>
+              </div>
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

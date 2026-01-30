@@ -1,6 +1,6 @@
 // TEMPORARY DATA
 
-export const role = "admin";
+// role is now managed dynamically via AuthContext
 
 export const teachersData = [
   {

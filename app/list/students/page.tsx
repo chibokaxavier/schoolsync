@@ -4,7 +4,8 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
+import { studentsData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -50,26 +51,24 @@ const columns = [
   },
 ];
 
-const grades = [
-  { label: "All", value: 0 },
-  { label: "JSS 1", value: 7 },
-  { label: "JSS 2", value: 8 },
-  { label: "JSS 3", value: 9 },
-  { label: "SS 1", value: 10 },
-  { label: "SS 2", value: 11 },
-  { label: "SS 3", value: 12 },
-];
-
 const StudentListPage = () => {
-  const [selectedGrade, setSelectedGrade] = useState(0);
+  const { user } = useAuth();
+  const { role } = user;
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
 
   const filteredData = useMemo(() => {
     let data = [...studentsData];
 
-    if (selectedGrade !== 0) {
-      data = data.filter((s) => s.grade === selectedGrade);
+    // Automatic Role-Based Filtering
+    if (role === "teacher") {
+      // Filter students in the classes this teacher teaches
+      if (user.classes) {
+        data = data.filter((s) => user.classes?.includes(s.class));
+      }
+    } else if (role === "student") {
+      // Filter students in the same class as this student
+      data = data.filter((s) => s.class === user.class);
     }
 
     if (query) {
@@ -82,7 +81,7 @@ const StudentListPage = () => {
     }
 
     return data;
-  }, [selectedGrade, query]);
+  }, [role, user.classes, user.class, query]);
 
   const renderRow = (item: Student) => (
     <tr
@@ -133,7 +132,9 @@ const StudentListPage = () => {
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-lg font-semibold hidden md:block">All Students</h1>
+        <h1 className="text-lg font-semibold hidden md:block">
+          {role === "admin" ? "All Students" : "My Students"}
+        </h1>
         <div className="flex flex-col md:flex-row items-center gap-4  w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
@@ -146,22 +147,6 @@ const StudentListPage = () => {
             {role === "admin" && <FormModal table="student" type="create" />}
           </div>
         </div>
-      </div>
-
-      {/* GRADE TABS */}
-      <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
-        {grades.map((grade) => (
-          <button
-            key={grade.value}
-            onClick={() => setSelectedGrade(grade.value)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGrade === grade.value
-              ? "bg-blue-600 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-          >
-            {grade.label}
-          </button>
-        ))}
       </div>
 
       {/* LIST */}

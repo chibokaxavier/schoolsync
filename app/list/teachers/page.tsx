@@ -3,7 +3,8 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, teachersData } from "@/lib/data";
+import { teachersData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -65,6 +66,8 @@ const columns = [
 ];
 
 const TeacherListPage = () => {
+  const { user } = useAuth();
+  const { role } = user;
   const [data, setData] = useState(teachersData);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);

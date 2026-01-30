@@ -4,7 +4,8 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, subjectsData } from "@/lib/data";
+import { subjectsData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import { SortAsc, Filter } from "lucide-react";
 import { useState, useMemo } from "react";
@@ -34,6 +35,8 @@ const columns = [
 ];
 
 const SubjectListPage = () => {
+  const { user } = useAuth();
+  const { role } = user;
   const [data, setData] = useState<Subject[]>(subjectsData);
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();

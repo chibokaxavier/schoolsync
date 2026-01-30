@@ -3,7 +3,8 @@
 import ConfirmPaymentModal from "@/components/ConfirmPaymentModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import { role, studentPaymentsData } from "@/lib/data";
+import { studentPaymentsData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import EmptyState from "@/components/EmptyState";
@@ -46,28 +47,15 @@ const columns = [
     },
 ];
 
-const grades = [
-    { label: "All", value: 0 },
-    { label: "JSS 1", value: 7 },
-    { label: "JSS 2", value: 8 },
-    { label: "JSS 3", value: 9 },
-    { label: "SS 1", value: 10 },
-    { label: "SS 2", value: 11 },
-    { label: "SS 3", value: 12 },
-];
-
 const PaymentTrackingPage = () => {
-    const [selectedGrade, setSelectedGrade] = useState(0);
+    const { user } = useAuth();
+    const { role } = user;
     const [selectedStudent, setSelectedStudent] = useState<any>(null);
     const searchParams = useSearchParams();
     const query = searchParams.get("search")?.toLowerCase();
 
     const filteredData = useMemo(() => {
         let data = [...studentPaymentsData];
-
-        if (selectedGrade !== 0) {
-            data = data.filter((s) => s.grade === selectedGrade);
-        }
 
         if (query) {
             data = data.filter(
@@ -79,9 +67,7 @@ const PaymentTrackingPage = () => {
         }
 
         return data;
-    }, [selectedGrade, query]);
-
-
+    }, [query]);
     const renderRow = (item: any) => (
         <tr
             key={item.id}
@@ -129,22 +115,6 @@ const PaymentTrackingPage = () => {
                 <div className="bg-lamaSkyLight p-2 rounded-lg text-xs font-bold text-lamaSky">
                     Total Owed: $2,280
                 </div>
-            </div>
-
-            {/* GRADE TABS */}
-            <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-                {grades.map((grade) => (
-                    <button
-                        key={grade.value}
-                        onClick={() => setSelectedGrade(grade.value)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGrade === grade.value
-                            ? "bg-lamaPurple text-white"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
-                    >
-                        {grade.label}
-                    </button>
-                ))}
             </div>
 
             {/* LIST */}

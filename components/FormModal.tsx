@@ -23,6 +23,8 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+import { useAuth } from "@/context/AuthContext";
+
 // Use this to trigger any Client Side action (like local delete)
 // OR eventually Server Actions
 interface FormModalProps {
@@ -36,6 +38,8 @@ interface FormModalProps {
 
 
 const FormModal = ({ table, type, data, id, action, onSubmit }: FormModalProps) => {
+    const { user } = useAuth();
+    const { role } = user;
     const Icon = type === "create" ? Plus : type === "update" ? Pencil : Trash;
     const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
     const bgColor =

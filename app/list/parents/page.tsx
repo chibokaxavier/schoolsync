@@ -3,7 +3,8 @@
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { parentsData, role } from "@/lib/data";
+import { parentsData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -46,6 +47,8 @@ const columns = [
 ];
 
 const Page = () => {
+  const { user } = useAuth();
+  const { role } = user;
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
 

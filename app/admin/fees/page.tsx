@@ -1,7 +1,8 @@
 "use client";
 
 import Table from "@/components/Table";
-import { feeStructureData, role } from "@/lib/data";
+import { feeStructureData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
 import React from "react";
 
 const columns = [
@@ -41,6 +42,8 @@ type FeeStructure = {
 };
 
 const FeeStructurePage = () => {
+    const { user } = useAuth();
+    const { role } = user;
     const renderRow = (item: FeeStructure) => {
         const total = item.tuition + item.bus + item.uniform + item.other;
         return (
