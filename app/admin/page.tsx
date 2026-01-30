@@ -54,32 +54,34 @@ const AdminPage = () => {
 
         {/* QUICK STATS CARDS */}
         <h2 className="text-xl font-bold text-gray-800 mt-2">Overview</h2>
-        <div className="flex gap-4 justify-between flex-wrap">
-          <Link href="/list/students" className="flex-1 min-w-[130px] hover:no-underline">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+          <Link href="/list/students" className="hover:no-underline">
             <UserCard type="Total Students" count="3,450" />
           </Link>
-          <Link href="/list/teachers" className="flex-1 min-w-[130px] hover:no-underline">
+          <Link href="/list/teachers" className="hover:no-underline">
             <UserCard type="Total Teachers" count="120" />
           </Link>
-          <Link href="/list/parents" className="flex-1 min-w-[130px] hover:no-underline">
+          <Link href="/list/parents" className="hover:no-underline">
             <UserCard type="Total Parents" count="2,800" />
           </Link>
-          <Link href="/list/payments" className="flex-1 min-w-[130px] hover:no-underline">
+          <Link href="/admin/payments" className="hover:no-underline">
             <UserCard type="Total Fees Collected" count="$150,000" subtitle="This Term" />
           </Link>
         </div>
+
 
         {/* SHORTCUTS GRID */}
         <h2 className="text-xl font-bold text-gray-800 mt-2">Quick Access</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "Add Student", icon: "/student.png", color: "bg-lamaSkyLight" },
-            { label: "Payment Tracking", icon: "/finance.png", color: "bg-pink-50", href: "/list/payments" },
-            { label: "Fee Structure", icon: "/finance.png", color: "bg-lamaSkyLight", href: "/list/fees" },
-            { label: "Cycle Management", icon: "/calendar.png", color: "bg-purple-50", href: "/list/cycle" },
+            { label: "Payment Tracking", icon: "/finance.png", color: "bg-pink-50", href: "/admin/payments" },
+            { label: "Fee Structure", icon: "/finance.png", color: "bg-lamaSkyLight", href: "/admin/fees" },
+            { label: "Cycle Management", icon: "/calendar.png", color: "bg-purple-50", href: "/admin/cycle" },
             { label: "Add Class", icon: "/student.png", color: "bg-lamaYellowLight", href: "/list/classes" },
             { label: "Add Subject", icon: "/teacher.png", color: "bg-lamaPurpleLight", href: "/list/subjects" },
-            { label: "Create Event", icon: "/calendar.png", color: "bg-lamaYellowLight" },
+            { label: "Create Event", icon: "/calendar.png", color: "bg-lamaYellowLight", href: "/admin/events" },
+
             { label: "Send Message", icon: "/message.png", color: "bg-pink-50" },
           ].map((shortcut) => (
             <Link href={shortcut.href || "#"} key={shortcut.label} className={`${shortcut.color} p-4 rounded-xl flex flex-col items-center justify-center gap-3 hover:shadow-md transition-shadow cursor-pointer h-32`}>

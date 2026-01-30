@@ -76,9 +76,10 @@ const menuItems = [
       {
         icon: "/calendar.png",
         label: "Events",
-        href: "/list/events",
+        href: "/admin/events",
         visible: ["admin", "teacher", "student", "parent"],
       },
+
       {
         icon: "/message.png",
         label: "Messages",
@@ -102,6 +103,13 @@ const menuItems = [
         href: "/profile",
         visible: ["admin", "teacher", "student", "parent"],
       },
+      {
+        icon: "/calendar.png",
+        label: "Cycle Management",
+        href: "/admin/cycle",
+        visible: ["admin"],
+      },
+
       {
         icon: "/setting.png",
         label: "Settings",
