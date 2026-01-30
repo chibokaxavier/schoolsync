@@ -4,7 +4,9 @@ import TableSearch from "@/components/TableSearch";
 import { parentsData, role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Parent = {
   id: number;
@@ -41,7 +43,26 @@ const columns = [
   },
 ];
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let data = [...parentsData];
+
+    if (query) {
+      data = data.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query) ||
+          p.email?.toLowerCase().includes(query) ||
+          p.phone.includes(query) ||
+          p.students.some((s) => s.toLowerCase().includes(query))
+      );
+    }
+
+    return data;
+  }, [query]);
+
   const renderRow = (item: Parent) => (
     <tr
       key={item.id}
@@ -95,14 +116,19 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={parentsData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;
+

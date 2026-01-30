@@ -4,7 +4,9 @@ import TableSearch from "@/components/TableSearch";
 import { role, eventsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Event = {
   id: number;
@@ -46,7 +48,24 @@ const columns = [
   },
 ];
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let data = [...eventsData];
+
+    if (query) {
+      data = data.filter(
+        (e) =>
+          e.title.toLowerCase().includes(query) ||
+          e.class.toLowerCase().includes(query)
+      );
+    }
+
+    return data;
+  }, [query]);
+
   const renderRow = (item: Event) => (
     <tr
       key={item.id}
@@ -95,14 +114,18 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={eventsData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;

@@ -7,7 +7,9 @@ import TableSearch from "@/components/TableSearch";
 import { role, subjectsData } from "@/lib/data";
 import Image from "next/image";
 import { SortAsc, Filter } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Subject = {
   id: number;
@@ -33,6 +35,22 @@ const columns = [
 
 const SubjectListPage = () => {
   const [data, setData] = useState<Subject[]>(subjectsData);
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let processed = [...data];
+
+    if (query) {
+      processed = processed.filter(
+        (s) =>
+          s.name.toLowerCase().includes(query) ||
+          s.teachers.some((t) => t.toLowerCase().includes(query))
+      );
+    }
+
+    return processed;
+  }, [data, query]);
 
   const handleDelete = (id: number) => {
     setData(data.filter((item) => item.id !== id));
@@ -48,7 +66,17 @@ const SubjectListPage = () => {
   };
 
   const handleUpdate = (formData: any, id: number) => {
-    setData(data.map(item => item.id === id ? { ...item, name: formData.name, teachers: [formData.teachers || item.teachers[0]] } : item));
+    setData(
+      data.map((item) =>
+        item.id === id
+          ? {
+            ...item,
+            name: formData.name,
+            teachers: [formData.teachers || item.teachers[0]],
+          }
+          : item
+      )
+    );
   };
 
   const renderRow = (item: Subject) => (
@@ -62,8 +90,18 @@ const SubjectListPage = () => {
         <div className="flex items-center gap-2">
           {role === "admin" && (
             <>
-              <FormModal table="subject" type="update" data={item} onSubmit={(formData) => handleUpdate(formData, item.id)} />
-              <FormModal table="subject" type="delete" id={item.id} action={() => handleDelete(item.id)} />
+              <FormModal
+                table="subject"
+                type="update"
+                data={item}
+                onSubmit={(formData) => handleUpdate(formData, item.id)}
+              />
+              <FormModal
+                table="subject"
+                type="delete"
+                id={item.id}
+                action={() => handleDelete(item.id)}
+              />
             </>
           )}
         </div>
@@ -84,15 +122,23 @@ const SubjectListPage = () => {
             </button>
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               <SortAsc className="w-4 h-4 text-gray-700" />
-            </button>
-            {role === "admin" && <FormModal table="subject" type="create" onSubmit={handleCreate} />}
+            </button>{" "}
+            {role === "admin" && (
+              <FormModal table="subject" type="create" onSubmit={handleCreate} />
+            )}
           </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={data} />
-      {/* PAGINATION */}
-      <Pagination />
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };

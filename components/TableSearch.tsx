@@ -8,37 +8,48 @@ import React from "react";
 const TableSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [val, setVal] = React.useState(searchParams.get("search") || "");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const value = (e.currentTarget.elements.namedItem("search") as HTMLInputElement).value;
-    const params = new URLSearchParams(searchParams.toString());
+  // Sync val with URL param (e.g., when cleared from outside)
+  React.useEffect(() => {
+    setVal(searchParams.get("search") || "");
+  }, [searchParams]);
 
-    if (value) {
-      params.set("search", value);
-    } else {
-      params.delete("search");
-    }
+  // Real-time update with debounce logic
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString());
+      const currentQuery = searchParams.get("search") || "";
 
-    router.push(`${window.location.pathname}?${params.toString()}`);
-  };
+      // Only push if the value has actually changed to avoid unnecessary history entries
+      if (val !== currentQuery) {
+        if (val) {
+          params.set("search", val);
+        } else {
+          params.delete("search");
+        }
+        router.push(`${window.location.pathname}?${params.toString()}`);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [val, router, searchParams]);
+
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full md:w-auto flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 px-2 bg-white"
-    >
+    <div className="w-full md:w-auto flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 px-2 bg-white">
       <Search className="w-4 h-4 text-gray-500" />
       <Input
-        name="search"
         type="text"
         placeholder="Search..."
-        defaultValue={searchParams.get("search") || ""}
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
         className="w-[200px] p-2 bg-transparent outline-none border-none focus-visible:ring-0 shadow-none"
       />
-    </form>
+    </div>
   );
 };
+
 
 export default TableSearch;
 

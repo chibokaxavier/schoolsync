@@ -30,10 +30,12 @@ interface FormModalProps {
     type: "create" | "update" | "delete";
     data?: any;
     id?: number | string;
-    action?: () => void; // Optional callback for local state handling
+    action?: () => void; // Optional callback for delete
+    onSubmit?: (data: any) => void; // Callback for create/update
 }
 
-const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
+
+const FormModal = ({ table, type, data, id, action, onSubmit }: FormModalProps) => {
     const Icon = type === "create" ? Plus : type === "update" ? Pencil : Trash;
     const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
     const bgColor =
@@ -58,8 +60,19 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
     };
 
     const Form = () => {
+        const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            if (onSubmit) {
+                const formData = new FormData(e.currentTarget);
+                const payload = Object.fromEntries(formData.entries());
+                onSubmit(payload);
+            }
+            setOpen(false);
+        };
+
         return (
-            <form className="flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); setOpen(false); }}>
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+
                 {table === "student" && type === "create" ? (
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -114,7 +127,7 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Parent Link */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Parent Phone/Email</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="parentContact"/>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="parentContact" />
                         </div>
                     </div>
                 ) : table === "teacher" && type === "create" ? (
@@ -122,23 +135,23 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Name Fields */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">First Name</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Jane" name="firstName"/>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Jane" name="firstName" />
                         </div>
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Last Name</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Smith" name="lastName"/>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Smith" name="lastName" />
                         </div>
 
                         {/* Employee ID */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Employee ID (Username)</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="T2025001" name="username"/>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="T2025001" name="username" />
                         </div>
 
                         {/* Phone/Email */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Phone/Email</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="phone"/>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="phone" />
                         </div>
 
                         {/* Subjects */}
@@ -211,13 +224,13 @@ const FormModal = ({ table, type, data, id, action }: FormModalProps) => {
                         {/* Capacity */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Capacity</Label>
-                            <Input type="number" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 25" name="capacity"/>
+                            <Input type="number" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 25" name="capacity" />
                         </div>
 
                         {/* Supervisor */}
                         <div className="flex flex-col gap-2">
                             <Label className="text-sm text-gray-500">Supervisor</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Teacher Name" name="supervisor"/>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="Teacher Name" name="supervisor" />
                         </div>
                     </div>
                 ) : table === "subject" && (type === "create" || type === "update") ? (

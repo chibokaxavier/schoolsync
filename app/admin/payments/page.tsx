@@ -1,10 +1,12 @@
 "use client";
 
 import ConfirmPaymentModal from "@/components/ConfirmPaymentModal";
+import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import { role, studentPaymentsData } from "@/lib/data";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
+import EmptyState from "@/components/EmptyState";
 
 const columns = [
     {
@@ -145,9 +147,16 @@ const PaymentTrackingPage = () => {
                 ))}
             </div>
 
-            <div>
-                <Table columns={columns} renderRow={renderRow} data={filteredData} />
-            </div>
+            {/* LIST */}
+            {filteredData.length > 0 ? (
+                <>
+                    <Table columns={columns} renderRow={renderRow} data={filteredData} />
+                    {/* PAGINATION */}
+                    <Pagination />
+                </>
+            ) : (
+                <EmptyState query={query || undefined} />
+            )}
 
             {selectedStudent && (
                 <ConfirmPaymentModal

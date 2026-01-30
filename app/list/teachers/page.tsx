@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import { Eye, Filter, SortAsc, Plus } from "lucide-react";
+import EmptyState from "@/components/EmptyState";
 
 import {
   DropdownMenu,
@@ -208,11 +209,18 @@ const TeacherListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={filteredData} />
-      {/* PAGINATION */}
-      <Pagination />
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
+
 
 export default TeacherListPage;

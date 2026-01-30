@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
+import EmptyState from "@/components/EmptyState";
 
 type Student = {
   id: number;
@@ -163,12 +164,16 @@ const StudentListPage = () => {
         ))}
       </div>
 
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={filteredData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
