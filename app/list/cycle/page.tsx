@@ -13,6 +13,11 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 
 const AcademicCyclePage = () => {
     const [session, setSession] = useState(currentAcademicCycle.session);
@@ -22,22 +27,17 @@ const AcademicCyclePage = () => {
     const [showSuccess, setShowSuccess] = useState(false);
 
     const handleSaveCycle = () => {
-        // In a real app, this would hit an API
         console.log("Saving Academic Cycle:", { session, term });
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
     };
 
     const handlePromoteStudents = () => {
-        // Promotion Logic: Increment grade by 1
-        // If grade is already 12 (SS3), they graduate (handled as a status change here)
         const promotedStudents = students.map((student) => {
             if (student.grade < 12) {
                 return {
                     ...student,
                     grade: student.grade + 1,
-                    // Update class label too if it starts with the grade number (e.g., 1B -> 2B)
-                    // Simplified for this mock: just incrementing the grade number
                 };
             } else {
                 return {
@@ -53,139 +53,153 @@ const AcademicCyclePage = () => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-2xl flex-1 m-4 mt-0 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3 mb-8">
-                <div className="bg-lamaPurpleLight p-3 rounded-xl">
-                    <Calendar className="text-lamaPurple w-6 h-6" />
+        <div className="p-6 space-y-8 max-w-7xl mx-auto">
+            <div className="flex items-center gap-4">
+                <div className="bg-primary/10 p-3 rounded-2xl">
+                    <Calendar className="text-primary w-8 h-8" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Academic Cycle</h1>
-                    <p className="text-gray-500 text-sm">Manage school terms and student promotions</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Academic Cycle</h1>
+                    <p className="text-muted-foreground">Manage school terms and automate student promotions</p>
                 </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
                 {/* CYCLE SETTINGS */}
-                <div className="space-y-6">
-                    <h2 className="text-lg font-bold text-gray-700 flex items-center gap-2">
-                        <RefreshCcw className="w-5 h-5 text-lamaSky" />
-                        Current Session & Term
-                    </h2>
-
-                    <div className="bg-gray-50 p-6 rounded-2xl space-y-4 border border-gray-100">
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Academic Session</label>
-                            <select
-                                value={session}
-                                onChange={(e) => setSession(e.target.value)}
-                                className="w-full p-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-lamaSky/20 transition-all font-medium"
-                            >
-                                <option>2024/2025</option>
-                                <option>2025/2026</option>
-                                <option>2026/2027</option>
-                            </select>
+                <Card className="border-none shadow-sm bg-white/50 backdrop-blur-sm">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-xl">
+                            <RefreshCcw className="w-5 h-5 text-blue-500" />
+                            Cycle Configuration
+                        </CardTitle>
+                        <CardDescription>Update the current academic session and active term</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-gray-700">Academic Session</label>
+                            <Select value={session} onValueChange={setSession}>
+                                <SelectTrigger className="h-12 rounded-xl">
+                                    <SelectValue placeholder="Select Session" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="2024/2025">2024/2025</SelectItem>
+                                    <SelectItem value="2025/2026">2025/2026</SelectItem>
+                                    <SelectItem value="2026/2027">2026/2027</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
 
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">Active Term</label>
+                        <div className="space-y-3">
+                            <label className="text-sm font-semibold text-gray-700">Active Term</label>
                             <div className="grid grid-cols-3 gap-2">
                                 {["First Term", "Second Term", "Third Term"].map((t) => (
-                                    <button
+                                    <Button
                                         key={t}
+                                        variant={term === t ? "default" : "outline"}
                                         onClick={() => setTerm(t)}
-                                        className={`p-3 rounded-xl text-xs font-bold transition-all border ${term === t
-                                                ? "bg-lamaSky text-white border-lamaSky shadow-md shadow-sky-100"
-                                                : "bg-white text-gray-600 border-gray-100 hover:border-lamaSky/30"
-                                            }`}
+                                        className="h-10 rounded-xl font-bold transition-all"
                                     >
                                         {t}
-                                    </button>
+                                    </Button>
                                 ))}
                             </div>
                         </div>
 
-                        <button
+                        <Button
                             onClick={handleSaveCycle}
-                            className="w-full bg-lamaPurple text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-purple-100"
+                            className="w-full h-12 rounded-xl font-bold shadow-lg shadow-primary/20"
+                            variant={showSuccess ? "outline" : "default"}
                         >
-                            <Save size={18} />
-                            {showSuccess ? "Settings Saved!" : "Save Cycle Settings"}
-                        </button>
-                    </div>
-                </div>
+                            <Save className="mr-2 w-4 h-4" />
+                            {showSuccess ? "Changes Saved!" : "Save Configuration"}
+                        </Button>
+                    </CardContent>
+                </Card>
 
                 {/* PROMOTION CENTER */}
-                <div className="space-y-6">
-                    <h2 className="text-lg font-bold text-gray-700 flex items-center gap-2">
-                        <GraduationCap className="w-5 h-5 text-lamaYellow" />
-                        Promotion Center
-                    </h2>
+                <div className="space-y-8">
+                    <Card className="border-none shadow-sm bg-red-50/30 border border-red-100 italic">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-xl text-red-700">
+                                <GraduationCap className="w-5 h-5 text-red-500" />
+                                Promotion Center
+                            </CardTitle>
+                            <CardDescription className="text-red-600/70">End-of-year mass student progression</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <Alert variant="destructive" className="bg-white border-red-200">
+                                <AlertTriangle className="h-4 w-4" />
+                                <AlertTitle>Critical Information</AlertTitle>
+                                <AlertDescription className="text-xs">
+                                    This action will increment the grade level of ALL active students. Students in SS 3 will be marked as Graduated.
+                                </AlertDescription>
+                            </Alert>
 
-                    <div className="bg-red-50 p-6 rounded-2xl border border-red-100 space-y-4">
-                        <div className="flex gap-4 items-start">
-                            <div className="bg-red-100 p-2 rounded-lg">
-                                <AlertTriangle className="text-red-600 w-5 h-5" />
-                            </div>
-                            <div>
-                                <h3 className="font-bold text-red-800">End of Year Promotion</h3>
-                                <p className="text-red-700/70 text-sm mt-1">
-                                    This action will increment the grade level of ALL active students by one. Students in SS 3 will be marked as Graduated.
-                                </p>
-                            </div>
-                        </div>
+                            <Button
+                                variant="destructive"
+                                onClick={() => setIsPromoteModalOpen(true)}
+                                className="w-full h-12 rounded-xl font-bold shadow-lg shadow-red-100"
+                            >
+                                <GraduationCap className="mr-2 w-4 h-4" />
+                                Run Mass Promotion
+                            </Button>
+                        </CardContent>
+                    </Card>
 
-                        <button
-                            onClick={() => setIsPromoteModalOpen(true)}
-                            className="w-full bg-white border-2 border-red-200 text-red-600 py-3 rounded-xl font-bold hover:bg-red-600 hover:text-white hover:border-red-600 transition-all flex items-center justify-center gap-2"
-                        >
-                            <GraduationCap size={18} />
-                            Promote All Students
-                        </button>
-                    </div>
-
-                    <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-                        <h3 className="font-bold text-blue-800 mb-2">Cycle Stats</h3>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded-xl border border-blue-100">
-                                <p className="text-xs text-blue-600 font-bold uppercase">Total Students</p>
-                                <p className="text-xl font-black text-blue-900">{students.length}</p>
-                            </div>
-                            <div className="bg-white p-3 rounded-xl border border-blue-100">
-                                <p className="text-xs text-blue-600 font-bold uppercase">Current Session</p>
-                                <p className="text-xl font-black text-blue-900">{session}</p>
-                            </div>
-                        </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-2">
+                                <CardDescription className="text-[10px] font-bold uppercase tracking-widest">Total Students</CardDescription>
+                                <CardTitle className="text-2xl font-black text-primary">{students.length}</CardTitle>
+                            </CardHeader>
+                        </Card>
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-2">
+                                <CardDescription className="text-[10px] font-bold uppercase tracking-widest">Active Session</CardDescription>
+                                <CardTitle className="text-2xl font-black text-primary">{session}</CardTitle>
+                            </CardHeader>
+                        </Card>
                     </div>
                 </div>
             </div>
 
-            {/* PROMOTION MODAL */}
             <AlertDialog open={isPromoteModalOpen} onOpenChange={setIsPromoteModalOpen}>
-                <AlertDialogContent className="rounded-2xl">
+                <AlertDialogContent className="rounded-2xl border-none shadow-2xl">
                     <AlertDialogHeader>
-                        <AlertDialogTitle className="text-xl font-bold flex items-center gap-2">
-                            <AlertTriangle className="text-red-500" />
+                        <AlertDialogTitle className="text-2xl font-bold flex items-center gap-2 text-red-600">
+                            <AlertTriangle className="w-6 h-6" />
                             Confirm Mass Promotion?
                         </AlertDialogTitle>
-                        <AlertDialogDescription className="text-gray-600">
-                            You are about to promote <span className="font-bold text-gray-900">{students.length} students</span> to their next grade level.
-                            <br /><br />
-                            <ul className="list-disc ml-4 space-y-1 text-sm">
-                                <li>JSS 1 students will become JSS 2</li>
-                                <li>SS 2 students will become SS 3</li>
-                                <li>SS 3 students will be marked as <span className="text-green-600 font-bold">Graduated</span></li>
-                            </ul>
-                            <br />
-                            This action is <span className="text-red-600 font-bold">irreversible</span>.
+                        <AlertDialogDescription className="space-y-4 pt-2">
+                            <p>You are about to promote <Badge variant="outline" className="text-red-600 border-red-200">{students.length}</Badge> students to their next grade level.</p>
+
+                            <div className="bg-muted p-4 rounded-xl text-sm space-y-2">
+                                <div className="flex justify-between">
+                                    <span>JSS 1 students</span>
+                                    <span className="font-bold">→ JSS 2</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>SS 2 students</span>
+                                    <span className="font-bold">→ SS 3</span>
+                                </div>
+                                <div className="flex justify-between text-red-600">
+                                    <span>SS 3 students</span>
+                                    <span className="font-bold uppercase tracking-tighter">Graduated</span>
+                                </div>
+                            </div>
+
+                            <p className="text-xs text-muted-foreground font-medium italic">
+                                * This action is irreversible and should only be performed once per academic year.
+                            </p>
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel className="rounded-xl border-gray-200 font-bold">Cancel</AlertDialogCancel>
+                    <AlertDialogFooter className="pt-4">
+                        <AlertDialogCancel className="rounded-xl border-gray-200 font-bold h-12">Cancel</AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handlePromoteStudents}
-                            className="bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold shadow-lg shadow-red-100"
+                            className="bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold h-12 shadow-lg shadow-red-100"
                         >
-                            Yes, Promote All
+                            Confirm & Execute
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
