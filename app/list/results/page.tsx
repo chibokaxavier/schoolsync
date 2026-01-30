@@ -1,10 +1,14 @@
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, resultsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Result = {
   id: number;
@@ -53,7 +57,26 @@ const columns = [
   },
 ];
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let data = [...resultsData];
+
+    if (query) {
+      data = data.filter(
+        (r) =>
+          r.subject.toLowerCase().includes(query) ||
+          r.student.toLowerCase().includes(query) ||
+          r.teacher.toLowerCase().includes(query) ||
+          r.type.toLowerCase().includes(query)
+      );
+    }
+
+    return data;
+  }, [query]);
+
   const renderRow = (item: Result) => (
     <tr
       key={item.id}
@@ -66,7 +89,7 @@ const page = () => {
       <td className="hidden md:table-cell"> {item.class}</td>
       <td className="hidden md:table-cell"> {item.date}</td>
       <td>
-        <div className="flex items-center gap-2 "> 
+        <div className="flex items-center gap-2 ">
           <Link href={`/list/teachers/${item.id}`}>
             <button className="w-7 h-7 flex items-center justify-center rounded-full bg-blue-100">
               <Image src="/edit.png" width={16} height={16} alt="" />
@@ -103,14 +126,19 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={resultsData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;
+

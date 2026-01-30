@@ -1,19 +1,72 @@
+"use client";
+
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, classesData } from "@/lib/data";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
+import { Filter, SortAsc } from "lucide-react";
+
+const grades = [
+  { label: "All", value: 0 },
+  { label: "JSS 1", value: 7 },
+  { label: "JSS 2", value: 8 },
+  { label: "JSS 3", value: 9 },
+  { label: "SS 1", value: 10 },
+  { label: "SS 2", value: 11 },
+  { label: "SS 3", value: 12 },
+];
+
+
+type Class = {
+  id: number;
+  name: string;
+  capacity: number;
+  grade: number;
+  supervisor: string;
+};
+
+const columns = [
+  {
+    header: "Class Name",
+    accessor: "name",
+  },
+  {
+    header: "Capacity",
+    accessor: "capacity",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Grade",
+    accessor: "grade",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Supervisor",
+    accessor: "supervisor",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Actions",
+    accessor: "action",
+  },
+];
 
 const ClassListPage = () => {
+  const [selectedGrade, setSelectedGrade] = useState(0);
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
 
   const filteredData = useMemo(() => {
     let data = [...classesData];
+
+    if (selectedGrade !== 0) {
+      data = data.filter((c) => c.grade === selectedGrade);
+    }
 
     if (query) {
       data = data.filter(
@@ -24,7 +77,7 @@ const ClassListPage = () => {
     }
 
     return data;
-  }, [query]);
+  }, [query, selectedGrade]);
 
   const renderRow = (item: Class) => (
     <tr
@@ -66,6 +119,23 @@ const ClassListPage = () => {
           </div>
         </div>
       </div>
+
+      {/* GRADE TABS */}
+      <div className="flex gap-2 my-6 overflow-x-auto pb-2 scrollbar-hide">
+        {grades.map((grade) => (
+          <button
+            key={grade.value}
+            onClick={() => setSelectedGrade(grade.value)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGrade === grade.value
+                ? "bg-lamaPurple text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+          >
+            {grade.label}
+          </button>
+        ))}
+      </div>
+
       {/* LIST */}
       {filteredData.length > 0 ? (
         <>

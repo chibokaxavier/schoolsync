@@ -1,11 +1,15 @@
 
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 // Mock data for messages
 const messagesData = [
@@ -72,6 +76,24 @@ const columns = [
 ];
 
 const MessagesListPage = () => {
+    const searchParams = useSearchParams();
+    const query = searchParams.get("search")?.toLowerCase();
+
+    const filteredData = useMemo(() => {
+        let data = [...messagesData];
+
+        if (query) {
+            data = data.filter(
+                (m) =>
+                    m.sender.toLowerCase().includes(query) ||
+                    m.subject.toLowerCase().includes(query) ||
+                    m.preview.toLowerCase().includes(query)
+            );
+        }
+
+        return data;
+    }, [query]);
+
     const renderRow = (item: Message) => (
         <tr
             key={item.id}
@@ -116,14 +138,19 @@ const MessagesListPage = () => {
                     </div>
                 </div>
             </div>
-            <div>
-                <Table columns={columns} renderRow={renderRow} data={messagesData} />
-            </div>
-            <div>
-                <Pagination />
-            </div>
+            {/* LIST */}
+            {filteredData.length > 0 ? (
+                <>
+                    <Table columns={columns} renderRow={renderRow} data={filteredData} />
+                    {/* PAGINATION */}
+                    <Pagination />
+                </>
+            ) : (
+                <EmptyState query={query || undefined} />
+            )}
         </div>
     );
 };
+
 
 export default MessagesListPage;

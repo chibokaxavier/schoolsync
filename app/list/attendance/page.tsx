@@ -1,11 +1,15 @@
 
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 // Mock data for attendance
 const attendanceData = [
@@ -82,6 +86,25 @@ const columns = [
 ];
 
 const AttendanceListPage = () => {
+    const searchParams = useSearchParams();
+    const query = searchParams.get("search")?.toLowerCase();
+
+    const filteredData = useMemo(() => {
+        let data = [...attendanceData];
+
+        if (query) {
+            data = data.filter(
+                (a) =>
+                    a.name.toLowerCase().includes(query) ||
+                    a.email.toLowerCase().includes(query) ||
+                    a.class.toLowerCase().includes(query) ||
+                    a.status.toLowerCase().includes(query)
+            );
+        }
+
+        return data;
+    }, [query]);
+
     const renderRow = (item: Attendance) => (
         <tr
             key={item.id}
@@ -105,10 +128,10 @@ const AttendanceListPage = () => {
             <td className="hidden lg:table-cell">
                 <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${item.status === "Present"
-                            ? "bg-green-100 text-green-700"
-                            : item.status === "Absent"
-                                ? "bg-red-100 text-red-700"
-                                : "bg-yellow-100 text-yellow-700"
+                        ? "bg-green-100 text-green-700"
+                        : item.status === "Absent"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
                         }`}
                 >
                     {item.status}
@@ -131,6 +154,7 @@ const AttendanceListPage = () => {
         </tr>
     );
 
+
     return (
         <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
             <div className="flex items-center justify-between">
@@ -152,14 +176,19 @@ const AttendanceListPage = () => {
                     </div>
                 </div>
             </div>
-            <div>
-                <Table columns={columns} renderRow={renderRow} data={attendanceData} />
-            </div>
-            <div>
-                <Pagination />
-            </div>
+            {/* LIST */}
+            {filteredData.length > 0 ? (
+                <>
+                    <Table columns={columns} renderRow={renderRow} data={filteredData} />
+                    {/* PAGINATION */}
+                    <Pagination />
+                </>
+            ) : (
+                <EmptyState query={query || undefined} />
+            )}
         </div>
     );
 };
+
 
 export default AttendanceListPage;

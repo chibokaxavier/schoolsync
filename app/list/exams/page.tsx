@@ -1,10 +1,14 @@
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role,examsData } from "@/lib/data";
+import { role, examsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Exam = {
   id: number;
@@ -39,7 +43,25 @@ const columns = [
   },
 ];
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let data = [...examsData];
+
+    if (query) {
+      data = data.filter(
+        (e) =>
+          e.subject.toLowerCase().includes(query) ||
+          e.class.toLowerCase().includes(query) ||
+          e.teacher.toLowerCase().includes(query)
+      );
+    }
+
+    return data;
+  }, [query]);
+
   const renderRow = (item: Exam) => (
     <tr
       key={item.id}
@@ -87,14 +109,19 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={examsData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;
+

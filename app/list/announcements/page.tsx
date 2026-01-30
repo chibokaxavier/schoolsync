@@ -1,10 +1,14 @@
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, announcementsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Announcement = {
   id: number;
@@ -34,14 +38,31 @@ const columns = [
   },
 ];
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let data = [...announcementsData];
+
+    if (query) {
+      data = data.filter(
+        (a) =>
+          a.title.toLowerCase().includes(query) ||
+          a.class.toLowerCase().includes(query)
+      );
+    }
+
+    return data;
+  }, [query]);
+
   const renderRow = (item: Announcement) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-100 "
     >
       <td className="flex items-center  gap-4 p-4"> {item.title}</td>
-      <td > {item.class}</td>
+      <td> {item.class}</td>
       <td className="hidden md:table-cell"> {item.date}</td>
 
       <td>
@@ -84,18 +105,19 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table
-          columns={columns}
-          renderRow={renderRow}
-          data={announcementsData}
-        />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;
+

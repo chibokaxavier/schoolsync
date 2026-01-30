@@ -1,10 +1,14 @@
+"use client";
+
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role,  assignmentsData } from "@/lib/data";
+import { role, assignmentsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import EmptyState from "@/components/EmptyState";
 
 type Assignment = {
   id: number;
@@ -39,7 +43,25 @@ const columns = [
   },
 ];
 
-const page = () => {
+const Page = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
+
+  const filteredData = useMemo(() => {
+    let data = [...assignmentsData];
+
+    if (query) {
+      data = data.filter(
+        (a) =>
+          a.subject.toLowerCase().includes(query) ||
+          a.class.toLowerCase().includes(query) ||
+          a.teacher.toLowerCase().includes(query)
+      );
+    }
+
+    return data;
+  }, [query]);
+
   const renderRow = (item: Assignment) => (
     <tr
       key={item.id}
@@ -69,7 +91,9 @@ const page = () => {
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       <div className="flex items-center justify-between ">
-        <h1 className="text-lg font-semibold hidden md:block">All Assignments </h1>
+        <h1 className="text-lg font-semibold hidden md:block">
+          All Assignments{" "}
+        </h1>
         <div className="flex flex-col md:flex-row items-center gap-4  w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
@@ -87,14 +111,19 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div>
-        <Table columns={columns} renderRow={renderRow} data={assignmentsData} />
-      </div>
-      <div>
-        <Pagination />
-      </div>
+      {/* LIST */}
+      {filteredData.length > 0 ? (
+        <>
+          <Table columns={columns} renderRow={renderRow} data={filteredData} />
+          {/* PAGINATION */}
+          <Pagination />
+        </>
+      ) : (
+        <EmptyState query={query || undefined} />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;
+
