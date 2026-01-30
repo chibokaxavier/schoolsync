@@ -31,12 +31,17 @@ const events = [
 
 const EventCalendar = () => {
   const [value, onChange] = useState<Value>(new Date());
+
   return (
-    <div className="bg-white p-4 rounded-md">
-      <Calendar className="react-calendar" onChange={onChange} value={value} />
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl my-4 font-semibold">Events</h1>
-        <Image src="/moreDark.png" alt="" width={20} height={20} />
+    <div className="bg-card p-4 rounded-xl">
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-lg font-semibold text-foreground">Recent Events</h1>
+        <Image src="/moreDark.png" alt="" width={20} height={20} className="opacity-40" />
+      </div>
+      <Calendar onChange={onChange} value={value} />
+      <div className="flex items-center justify-between mt-6 mb-4">
+        <h1 className="text-lg font-semibold text-foreground">Upcoming</h1>
+        <span className="text-xs text-muted-foreground cursor-pointer hover:underline">View All</span>
       </div>
       <div className="flex flex-col gap-4 ">
         {events.map((event, i) => (

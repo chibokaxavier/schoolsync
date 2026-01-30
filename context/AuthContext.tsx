@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (role === "teacher") {
             userData = {
-                id: 1, // Matches some supervisor IDs in data.ts potentially
+                id: 1,
                 name: "John Doe",
                 role: "teacher",
                 avatar: "https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200",
@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         setUser(userData);
         localStorage.setItem("schoolsync-role", role);
+        document.cookie = `schoolsync-role=${role}; path=/; max-age=31536000; SameSite=Lax`;
     };
 
     // Load role from localStorage on mount

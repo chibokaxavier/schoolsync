@@ -71,25 +71,25 @@ const PaymentTrackingPage = () => {
     const renderRow = (item: any) => (
         <tr
             key={item.id}
-            className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-100"
+            className="border-b border-border even:bg-muted/30 text-sm hover:bg-lamaPurpleLight transition-colors"
         >
-            <td className="p-4 font-semibold">{item.name}</td>
-            <td className="p-4 hidden md:table-cell text-gray-600">{item.studentId}</td>
-            <td className="p-4 hidden md:table-cell">{item.class}</td>
-            <td className="p-4">${item.totalDue}</td>
+            <td className="p-4 font-semibold text-foreground">{item.name}</td>
+            <td className="p-4 hidden md:table-cell text-muted-foreground">{item.studentId}</td>
+            <td className="p-4 hidden md:table-cell text-muted-foreground">{item.class}</td>
+            <td className="p-4 text-foreground">${item.totalDue}</td>
             <td className="p-4 text-green-600 font-medium">${item.amountPaid}</td>
             <td className="p-4">
-                <span className={`font-bold ${item.balance > 0 ? "text-red-500" : "text-gray-400"}`}>
+                <span className={`font-bold ${item.balance > 0 ? "text-red-500" : "text-muted-foreground/50"}`}>
                     ${item.balance}
                 </span>
             </td>
             <td className="p-4 hidden lg:table-cell">
                 <span
                     className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Paid"
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                         : item.status === "Partial"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-red-100 text-red-700"
+                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                         }`}
                 >
                     {item.status}
@@ -99,7 +99,7 @@ const PaymentTrackingPage = () => {
                 {role === "admin" && item.balance > 0 && (
                     <button
                         onClick={() => setSelectedStudent(item)}
-                        className="bg-lamaSky text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:opacity-80 transition-opacity"
+                        className="bg-lamaSky text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:opacity-80 transition-opacity dark:bg-sky-600"
                     >
                         Confirm Payment
                     </button>
@@ -109,10 +109,10 @@ const PaymentTrackingPage = () => {
     );
 
     return (
-        <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+        <div className="bg-card p-4 rounded-md flex-1 m-4 mt-0 border border-border shadow-sm">
             <div className="flex items-center justify-between mb-4">
-                <h1 className="text-lg font-semibold">Student Payments</h1>
-                <div className="bg-lamaSkyLight p-2 rounded-lg text-xs font-bold text-lamaSky">
+                <h1 className="text-lg font-semibold text-foreground">Student Payments</h1>
+                <div className="bg-lamaSkyLight dark:bg-sky-900/20 p-2 rounded-lg text-xs font-bold text-lamaSky dark:text-sky-400">
                     Total Owed: $2,280
                 </div>
             </div>
