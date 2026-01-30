@@ -3,7 +3,8 @@
 import ConfirmPaymentModal from "@/components/ConfirmPaymentModal";
 import Table from "@/components/Table";
 import { role, studentPaymentsData } from "@/lib/data";
-import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useState, useMemo } from "react";
 
 const columns = [
     {
@@ -56,11 +57,28 @@ const grades = [
 const PaymentTrackingPage = () => {
     const [selectedGrade, setSelectedGrade] = useState(0);
     const [selectedStudent, setSelectedStudent] = useState<any>(null);
+    const searchParams = useSearchParams();
+    const query = searchParams.get("search")?.toLowerCase();
 
-    const filteredData =
-        selectedGrade === 0
-            ? studentPaymentsData
-            : studentPaymentsData.filter((s) => s.grade === selectedGrade);
+    const filteredData = useMemo(() => {
+        let data = [...studentPaymentsData];
+
+        if (selectedGrade !== 0) {
+            data = data.filter((s) => s.grade === selectedGrade);
+        }
+
+        if (query) {
+            data = data.filter(
+                (s) =>
+                    s.name.toLowerCase().includes(query) ||
+                    s.studentId.toLowerCase().includes(query) ||
+                    s.class.toLowerCase().includes(query)
+            );
+        }
+
+        return data;
+    }, [selectedGrade, query]);
+
 
     const renderRow = (item: any) => (
         <tr
@@ -80,10 +98,10 @@ const PaymentTrackingPage = () => {
             <td className="p-4 hidden lg:table-cell">
                 <span
                     className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Paid"
-                            ? "bg-green-100 text-green-700"
-                            : item.status === "Partial"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-red-100 text-red-700"
+                        ? "bg-green-100 text-green-700"
+                        : item.status === "Partial"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-red-100 text-red-700"
                         }`}
                 >
                     {item.status}
@@ -118,8 +136,8 @@ const PaymentTrackingPage = () => {
                         key={grade.value}
                         onClick={() => setSelectedGrade(grade.value)}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGrade === grade.value
-                                ? "bg-lamaPurple text-white"
-                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            ? "bg-lamaPurple text-white"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                             }`}
                     >
                         {grade.label}

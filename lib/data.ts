@@ -1301,3 +1301,7 @@ export const studentPaymentsData = [
   },
 ];
 
+export const currentAcademicCycle = {
+  session: "2025/2026",
+  term: "First Term",
+};

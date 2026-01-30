@@ -7,7 +7,8 @@ import TableSearch from "@/components/TableSearch";
 import { role, studentsData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useState, useMemo } from "react";
 
 type Student = {
   id: number;
@@ -60,11 +61,27 @@ const grades = [
 
 const StudentListPage = () => {
   const [selectedGrade, setSelectedGrade] = useState(0);
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
 
-  const filteredData =
-    selectedGrade === 0
-      ? studentsData
-      : studentsData.filter((s) => s.grade === selectedGrade);
+  const filteredData = useMemo(() => {
+    let data = [...studentsData];
+
+    if (selectedGrade !== 0) {
+      data = data.filter((s) => s.grade === selectedGrade);
+    }
+
+    if (query) {
+      data = data.filter(
+        (s) =>
+          s.name.toLowerCase().includes(query) ||
+          s.studentId.toLowerCase().includes(query) ||
+          s.email.toLowerCase().includes(query)
+      );
+    }
+
+    return data;
+  }, [selectedGrade, query]);
 
   const renderRow = (item: Student) => (
     <tr
@@ -90,8 +107,8 @@ const StudentListPage = () => {
       <td className="hidden lg:table-cell">
         <span
           className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Active"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
             }`}
         >
           {item.status || "Active"}
@@ -137,8 +154,8 @@ const StudentListPage = () => {
             key={grade.value}
             onClick={() => setSelectedGrade(grade.value)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap ${selectedGrade === grade.value
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
           >
             {grade.label}

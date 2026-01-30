@@ -76,6 +76,7 @@ const AdminPage = () => {
             { label: "Add Student", icon: "/student.png", color: "bg-lamaSkyLight" },
             { label: "Payment Tracking", icon: "/finance.png", color: "bg-pink-50", href: "/list/payments" },
             { label: "Fee Structure", icon: "/finance.png", color: "bg-lamaSkyLight", href: "/list/fees" },
+            { label: "Cycle Management", icon: "/calendar.png", color: "bg-purple-50", href: "/list/cycle" },
             { label: "Add Class", icon: "/student.png", color: "bg-lamaYellowLight", href: "/list/classes" },
             { label: "Add Subject", icon: "/teacher.png", color: "bg-lamaPurpleLight", href: "/list/subjects" },
             { label: "Create Event", icon: "/calendar.png", color: "bg-lamaYellowLight" },

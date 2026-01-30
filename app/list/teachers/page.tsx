@@ -6,8 +6,10 @@ import TableSearch from "@/components/TableSearch";
 import { role, teachersData } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import { Eye, Filter, SortAsc, Plus } from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -65,6 +67,8 @@ const TeacherListPage = () => {
   const [data, setData] = useState(teachersData);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const query = searchParams.get("search")?.toLowerCase();
 
   // Extract unique subjects for the filter
   const allSubjects = Array.from(new Set(teachersData.flatMap(t => t.subjects)));
@@ -77,12 +81,24 @@ const TeacherListPage = () => {
   const filteredData = useMemo(() => {
     let processed = [...data];
 
-    // 1. Filter
+    // 1. Filter by Subject
     if (selectedSubject) {
       processed = processed.filter(item => item.subjects.includes(selectedSubject));
     }
 
-    // 2. Sort
+    // 2. Filter by Search Query
+    if (query) {
+      processed = processed.filter(
+        (t) =>
+          t.name.toLowerCase().includes(query) ||
+          t.teacherId.toLowerCase().includes(query) ||
+          t.email.toLowerCase().includes(query) ||
+          t.subjects.some((s) => s.toLowerCase().includes(query)) ||
+          t.classes.some((c) => c.toLowerCase().includes(query))
+      );
+    }
+
+    // 3. Sort
     if (sortOrder) {
       processed.sort((a, b) => {
         if (sortOrder === "asc") {
@@ -94,7 +110,7 @@ const TeacherListPage = () => {
     }
 
     return processed;
-  }, [data, selectedSubject, sortOrder]);
+  }, [data, selectedSubject, sortOrder, query]);
 
 
   const renderRow = (item: Teacher) => (
@@ -119,7 +135,7 @@ const TeacherListPage = () => {
       <td className="hidden md:table-cell">{item.classes.join(",")}</td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">
-           <div className={`w-3 h-3 rounded-full ${item.status === "Active" ? "bg-green-500" : "bg-red-500"}`} title={item.status || "Active"} />
+        <div className={`w-3 h-3 rounded-full ${item.status === "Active" ? "bg-green-500" : "bg-red-500"}`} title={item.status || "Active"} />
       </td>
       <td>
         <div className="flex items-center gap-2">
