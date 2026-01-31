@@ -68,7 +68,7 @@ const menuItems = [
       {
         icon: "/calendar.png",
         label: "Events",
-        href: "/admin/events",
+        href: "/list/events",
       },
 
       {

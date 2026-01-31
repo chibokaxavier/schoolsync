@@ -8,52 +8,48 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-const events = [
-  {
-    id: 1,
-    title: "Math Olympiad",
-    time: "09:00 AM - 12:00 PM",
-    description: "The regional Math Olympiad will take place in the main auditorium. Good luck to all participants!",
-  },
-  {
-    id: 2,
-    title: "Staff Meeting",
-    time: "03:00 PM - 04:30 PM",
-    description: "Mandatory staff meeting to discuss the upcoming curriculum changes and event schedules.",
-  },
-  {
-    id: 3,
-    title: "Basketball Match",
-    time: "04:00 PM - 06:00 PM",
-    description: "Come cheer for our school team in the finals against Lincoln High at the sports complex.",
-  },
-];
+import { eventsData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
+
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const EventCalendar = () => {
+  const { user } = useAuth();
+  const { role } = user;
   const [value, onChange] = useState<Value>(new Date());
+
+  // Filter events for the 3 featured ones relevant to this role
+  const featuredEvents = eventsData
+    .filter(event => event.visibleTo.includes(role as any))
+    .slice(0, 3);
 
   return (
     <div className="bg-card p-4 rounded-xl">
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-lg font-semibold text-foreground">Recent Events</h1>
+        <h1 className="text-lg font-semibold text-foreground">School Events</h1>
         <Image src="/moreDark.png" alt="" width={20} height={20} className="opacity-40" />
       </div>
       <Calendar onChange={onChange} value={value} />
       <div className="flex items-center justify-between mt-6 mb-4">
         <h1 className="text-lg font-semibold text-foreground">Upcoming</h1>
-        <span className="text-xs text-muted-foreground cursor-pointer hover:underline">View All</span>
+        <Link href="/list/events">
+          <span className="text-xs text-muted-foreground cursor-pointer hover:underline hover:text-primary transition-colors">View All</span>
+        </Link>
       </div>
       <div className="flex flex-col gap-4 ">
-        {events.map((event, i) => (
+        {featuredEvents.map((event) => (
           <div
-            className="p-5 rounded-md border-2 border-gray-100 border-t-4 odd:border-t-[#CFCEFF] even:border-t-[#FAE27C]"
+            className="p-5 rounded-md border-2 border-border border-t-4 odd:border-t-primary/40 even:border-t-lamaYellow/40 bg-muted/20"
             key={event.id}
           >
             <div className="flex items-center justify-between">
-              <h1 className="font-semibold text-gray-600">{event.title}</h1>
-              <span className="text-gray-300  text-xs">{event.time}</span>
+              <h1 className="font-semibold text-foreground/80">{event.title}</h1>
+              <span className="text-muted-foreground text-[10px] tabular-nums">{event.startTime}</span>
             </div>
-            <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
+            <p className="mt-2 text-muted-foreground text-xs leading-relaxed">{event.description}</p>
           </div>
         ))}
       </div>
