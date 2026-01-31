@@ -5,7 +5,15 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Role } from "@/lib/permissions";
-import { Eye, EyeOff, Lock, User, GraduationCap, Users, UserCog } from "lucide-react";
+import {
+    Eye,
+    EyeOff,
+    Lock,
+    User,
+    GraduationCap,
+    Users,
+    UserCog,
+} from "lucide-react";
 
 const LoginPage = () => {
     const { setRole } = useAuth();
@@ -22,7 +30,12 @@ const LoginPage = () => {
     const roles: { id: Role; label: string; icon: any; color: string }[] = [
         { id: "admin", label: "Admin", icon: UserCog, color: "bg-lamaPurple" },
         { id: "teacher", label: "Teacher", icon: Users, color: "bg-lamaSky" },
-        { id: "student", label: "Student", icon: GraduationCap, color: "bg-lamaYellow" },
+        {
+            id: "student",
+            label: "Student",
+            icon: GraduationCap,
+            color: "bg-lamaYellow",
+        },
         { id: "parent", label: "Parent", icon: User, color: "bg-lamaPurpleLight" },
     ];
 
@@ -39,15 +52,21 @@ const LoginPage = () => {
                 <div className="flex flex-col items-center mb-8">
                     <div className="flex items-center gap-2 mb-2">
                         <Image src="/logo.png" alt="logo" width={32} height={32} />
-                        <span className="text-2xl font-bold tracking-tight text-foreground">SchoolSync</span>
+                        <span className="text-2xl font-bold tracking-tight text-foreground">
+                            SchoolSync
+                        </span>
                     </div>
-                    <p className="text-muted-foreground text-sm">Welcome back! Please login to your account.</p>
+                    <p className="text-muted-foreground text-sm">
+                        Welcome back! Please login to your account.
+                    </p>
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-6">
                     {/* Role Selection */}
                     <div className="space-y-3">
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Default Role (Simulator)</label>
+                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Default Role (Simulator)
+                        </label>
                         <div className="grid grid-cols-2 gap-2">
                             {roles.map((role) => {
                                 const Icon = role.icon;
@@ -58,8 +77,8 @@ const LoginPage = () => {
                                         type="button"
                                         onClick={() => setSelectedRole(role.id)}
                                         className={`flex items-center gap-2 p-2 rounded-lg border transition-all ${isSelected
-                                                ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                                : "border-border bg-muted/20 text-muted-foreground hover:border-border-hover hover:bg-muted/50"
+                                            ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                            : "border-border bg-muted/20 text-muted-foreground hover:border-border-hover hover:bg-muted/50"
                                             }`}
                                     >
                                         <Icon className="w-4 h-4" />
@@ -72,7 +91,9 @@ const LoginPage = () => {
 
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground ml-1">Username</label>
+                            <label className="text-sm font-medium text-foreground ml-1">
+                                Username
+                            </label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
                                     <User className="w-4 h-4" />
@@ -86,8 +107,10 @@ const LoginPage = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground ml-1">Password</label>
+                        <div className="space-y-2 bg-">
+                            <label className="text-sm font-medium text-foreground ml-1">
+                                Password
+                            </label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
                                     <Lock className="w-4 h-4" />
@@ -103,7 +126,11 @@ const LoginPage = () => {
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground transition-colors"
                                 >
-                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    {showPassword ? (
+                                        <EyeOff className="w-4 h-4" />
+                                    ) : (
+                                        <Eye className="w-4 h-4" />
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -111,10 +138,17 @@ const LoginPage = () => {
 
                     <div className="flex items-center justify-between text-xs px-1">
                         <label className="flex items-center gap-2 cursor-pointer group">
-                            <input type="checkbox" className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20" />
-                            <span className="text-muted-foreground group-hover:text-foreground transition-colors">Remember me</span>
+                            <input
+                                type="checkbox"
+                                className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20"
+                            />
+                            <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                                Remember me
+                            </span>
                         </label>
-                        <a href="#" className="text-primary font-medium hover:underline">Forgot password?</a>
+                        <a href="#" className="text-primary font-medium hover:underline">
+                            Forgot password?
+                        </a>
                     </div>
 
                     <button
@@ -127,7 +161,10 @@ const LoginPage = () => {
 
                 <div className="mt-8 text-center">
                     <p className="text-xs text-muted-foreground">
-                        Don't have an account? <a href="#" className="text-primary font-medium hover:underline">Contact Administrator</a>
+                        Don't have an account?{" "}
+                        <a href="#" className="text-primary font-medium hover:underline">
+                            Contact Administrator
+                        </a>
                     </p>
                 </div>
             </div>
