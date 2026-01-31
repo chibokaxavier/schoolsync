@@ -15,24 +15,36 @@ interface User {
 }
 
 interface AuthContextType {
-    user: User;
-    setRole: (role: Role) => void;
+    user: User | null;
+    setRole: (role: Role | null) => void;
+    logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const defaultUser: User = {
-    id: "admin-1",
-    name: "John Admin",
-    role: "admin",
-    avatar: "/avatar.png",
-};
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User>(defaultUser);
+    const [user, setUser] = useState<User | null>(null);
 
-    const setRole = (role: Role) => {
-        let userData: User = { ...defaultUser, role };
+    const logout = () => {
+        setUser(null);
+        localStorage.removeItem("schoolsync-role");
+        document.cookie = "schoolsync-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    };
+
+    const setRole = (role: Role | null) => {
+        if (!role) {
+            logout();
+            return;
+        }
+
+        const defaultAdmin: User = {
+            id: "admin-1",
+            name: "John Admin",
+            role: "admin",
+            avatar: "/avatar.png",
+        };
+
+        let userData: User = { ...defaultAdmin, role };
 
         if (role === "teacher") {
             userData = {
@@ -80,7 +92,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setRole }}>
+        <AuthContext.Provider value={{ user, setRole, logout }}>
             {children}
         </AuthContext.Provider>
     );

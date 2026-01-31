@@ -31,7 +31,7 @@ const menuItems = [
         href: "/list/parents",
       },
       {
-        icon: "/staff.png",
+        icon: "/teacher.png",
         label: "Moderators",
         href: "/list/moderators",
       },
