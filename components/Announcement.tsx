@@ -1,3 +1,5 @@
+"use client";
+
 import { announcementsData } from "@/lib/data";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";

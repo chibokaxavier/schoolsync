@@ -3,7 +3,7 @@
 import React from "react";
 import { useAuth } from "@/context/AuthContext";
 
-type Role = "admin" | "teacher" | "student" | "parent";
+import { Role } from "@/lib/permissions";
 
 interface RoleGateProps {
     children: React.ReactNode;
@@ -22,7 +22,7 @@ export const RoleGate = ({
 }: RoleGateProps) => {
     const { user } = useAuth();
 
-    if (!allowedRoles.includes(user.role)) {
+    if (!user || !allowedRoles.includes(user.role)) {
         return <>{fallback}</>;
     }
 

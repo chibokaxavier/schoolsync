@@ -15,7 +15,13 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
 
     useEffect(() => {
-        // middleware handles redirection for the most part, 
+        // 1. If no user and not on /login, redirect to /login
+        if (!user && pathname !== "/login") {
+            router.push("/login");
+            return;
+        }
+
+        // 2. middleware handles RBAC redirection for the most part, 
         // but client-side check is good for RBAC within the app session
         if (user && !isAuthorized(user.role, pathname)) {
             console.warn(`Unauthorized access attempt to ${pathname} by role ${user.role}. Redirecting to dashboard`);
