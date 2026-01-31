@@ -12,10 +12,6 @@ import { eventsData } from "@/lib/data";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 const EventCalendar = () => {
   const { user } = useAuth();
   const { role } = user;
