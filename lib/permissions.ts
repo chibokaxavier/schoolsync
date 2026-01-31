@@ -14,6 +14,7 @@ export const RoutePermissions: Record<string, Role[]> = {
     "/list/attendance": ["admin", "teacher", "student", "parent"],
     "/list/messages": ["admin", "teacher", "student", "parent"],
     "/list/announcements": ["admin", "teacher", "student", "parent"],
+    "/list/events": ["admin", "teacher", "student", "parent"],
     "/admin/events": ["admin", "teacher", "student", "parent"],
     "/admin/cycle": ["admin"],
     "/admin": ["admin"],
