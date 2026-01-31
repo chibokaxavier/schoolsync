@@ -26,10 +26,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const role = cookieStore.get("schoolsync-role")?.value || "student";
-  const homeHref = `/${role}`;
-
   return (
     <html lang="en">
       <body className={`${jamjuree.variable} antialiased`}>
@@ -41,26 +37,7 @@ export default async function RootLayout({
         >
           <AuthProvider>
             <AuthGate>
-              <div className="flex h-screen overflow-hidden bg-background">
-                {/* Sidebar */}
-                <div className="w-[14%] md:w-[12%] lg:w-[20%] xl:w-[18%] p-4 overflow-y-auto hidden md:block bg-card shadow-lg z-10 border-r">
-                  <Link href={homeHref} className="flex items-center justify-center lg:justify-start gap-2 mb-4">
-                    <div className="bg-primary/10 p-2 rounded-lg">
-                      <NotebookPen size={28} className="text-primary" />
-                    </div>
-                    <span className="hidden lg:block font-bold text-xl tracking-tight text-gray-900">SchoolSync</span>
-                  </Link>
-                  <Menu />
-                </div>
-
-                {/* Main Content */}
-                <div className="w-full md:w-[88%] lg:w-[80%] xl:w-[82%] bg-background overflow-y-auto flex flex-col">
-                  <Navbar />
-                  <main className="flex-1">
-                    {children}
-                  </main>
-                </div>
-              </div>
+              {children}
             </AuthGate>
           </AuthProvider>
         </ThemeProvider>

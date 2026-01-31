@@ -54,12 +54,15 @@ const columns = [
 
 const StudentListPage = () => {
   const { user } = useAuth();
-  const { role } = user;
+
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
 
   const filteredData = useMemo(() => {
+    if (!user) return [];
+
     let data = [...studentsData];
+    const { role } = user;
 
     // Automatic Role-Based Filtering
     if (role === "teacher") {
@@ -82,7 +85,9 @@ const StudentListPage = () => {
     }
 
     return data;
-  }, [role, user.classes, user.class, query]);
+  }, [user, query]);
+
+  if (!user) return null;
 
   const renderRow = (item: Student) => (
     <tr
@@ -112,29 +117,32 @@ const StudentListPage = () => {
             : "bg-red-100 text-red-700"
             }`}
         >
-          {item.status || "Active"}
+          {item.status}
         </span>
       </td>
-      <td className="hidden md:table-cell">
-        <div className="flex items-center gap-2 ">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSkyLight">
-              <Image src="/view.png" width={16} height={16} alt="" />
+      <td className="hidden lg:table-cell">{item.phone}</td>
+      <td className="hidden lg:table-cell">{item.address}</td>
+      <td>
+        <div className="flex items-center gap-2">
+          <Link href={`/list/students/${item.id}`}>
+            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky">
+              <Image src="/view.png" alt="" width={16} height={16} />
             </button>
           </Link>
-          <RoleGate allowedRoles={["admin"]}>
+          {user.role === "admin" && (
             <FormModal table="student" type="delete" id={item.id} />
-          </RoleGate>
+          )}
         </div>
       </td>
     </tr>
   );
 
   return (
-    <div className="bg-card p-4 rounded-md flex-1 m-4 mt-0 shadow-sm border border-border">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-lg font-semibold hidden md:block">
-          {role === "admin" ? "All Students" : "My Students"}
+    <div className="bg-card p-4 rounded-xl flex-1 m-4 mt-0 border border-border transition-all animate-in fade-in duration-500">
+      {/* HEADER */}
+      <div className="flex items-center justify-between">
+        <h1 className="hidden md:block text-lg font-semibold text-foreground">
+          {user.role === "admin" ? "All Students" : "My Students"}
         </h1>
         <div className="flex flex-col md:flex-row items-center gap-4  w-full md:w-auto">
           <TableSearch />
