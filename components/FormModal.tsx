@@ -268,6 +268,92 @@ const FormModal = ({ table, type, data, id, action, onSubmit }: FormModalProps) 
                             </Select>
                         </div>
                     </div>
+                ) : table === "event" && (type === "create" || type === "update") ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Event Title</Label>
+                            <Input type="text" name="title" className="p-2 rounded-md text-sm w-full" placeholder="e.g. Science Fair" defaultValue={data?.title} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Class</Label>
+                            <Input type="text" name="class" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 1A or All" defaultValue={data?.class} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Date</Label>
+                            <Input type="date" name="date" className="p-2 rounded-md text-sm w-full" defaultValue={data?.date} />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="flex flex-col gap-2">
+                                <Label className="text-sm text-gray-500">Start Time</Label>
+                                <Input type="time" name="startTime" className="p-2 rounded-md text-sm w-full" defaultValue={data?.startTime} />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Label className="text-sm text-gray-500">End Time</Label>
+                                <Input type="time" name="endTime" className="p-2 rounded-md text-sm w-full" defaultValue={data?.endTime} />
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Visible To</Label>
+                            <Select name="visibleTo">
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Visibility" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Everyone">Everyone</SelectItem>
+                                    <SelectItem value="Teachers">Teachers</SelectItem>
+                                    <SelectItem value="Admins">Admins</SelectItem>
+                                    <SelectItem value="Students">Students</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="flex flex-col gap-2 md:col-span-2">
+                            <Label className="text-sm text-gray-500">Description</Label>
+                            <textarea
+                                name="description"
+                                className="p-2 border border-border rounded-md text-sm w-full h-24 bg-background text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                placeholder="Describe the event..."
+                                defaultValue={data?.description}
+                            />
+                        </div>
+                    </div>
+                ) : table === "announcement" && (type === "create" || type === "update") ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Title</Label>
+                            <Input type="text" name="title" className="p-2 rounded-md text-sm w-full" placeholder="Announcement Title" defaultValue={data?.title} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Date</Label>
+                            <Input type="date" name="date" className="p-2 rounded-md text-sm w-full" defaultValue={data?.date} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Target Class</Label>
+                            <Input type="text" name="class" className="p-2 rounded-md text-sm w-full" placeholder="e.g. 4A or All" defaultValue={data?.class} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Visible To</Label>
+                            <Select name="visibleTo">
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Visibility" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Everyone">Everyone</SelectItem>
+                                    <SelectItem value="Teachers">Teachers</SelectItem>
+                                    <SelectItem value="Admins">Admins</SelectItem>
+                                    <SelectItem value="Students">Students</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="flex flex-col gap-2 md:col-span-2">
+                            <Label className="text-sm text-gray-500">Message Content</Label>
+                            <textarea
+                                name="description"
+                                className="p-2 border border-border rounded-md text-sm w-full h-32 bg-background text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                placeholder="Write the announcement message..."
+                                defaultValue={data?.description}
+                            />
+                        </div>
+                    </div>
                 ) : (
                     // Default/Fallback or other forms
                     <div className="flex flex-col gap-4">
