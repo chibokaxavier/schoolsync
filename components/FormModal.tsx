@@ -354,6 +354,29 @@ const FormModal = ({ table, type, data, id, action, onSubmit }: FormModalProps) 
                             />
                         </div>
                     </div>
+                ) : table === "moderator" && (type === "create" || type === "update") ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">First Name</Label>
+                            <Input type="text" name="firstName" className="p-2 rounded-md text-sm w-full" placeholder="John" defaultValue={data?.name?.split(" ")[0]} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Last Name</Label>
+                            <Input type="text" name="lastName" className="p-2 rounded-md text-sm w-full" placeholder="Doe" defaultValue={data?.name?.split(" ")[1]} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Employee ID (Username)</Label>
+                            <Input type="text" name="username" className="p-2 rounded-md text-sm w-full" placeholder="M2025001" defaultValue={data?.username} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Email</Label>
+                            <Input type="email" name="email" className="p-2 rounded-md text-sm w-full" placeholder="sarah@school.com" defaultValue={data?.email} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <Label className="text-sm text-gray-500">Phone</Label>
+                            <Input type="text" name="phone" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" defaultValue={data?.phone} />
+                        </div>
+                    </div>
                 ) : (
                     // Default/Fallback or other forms
                     <div className="flex flex-col gap-4">

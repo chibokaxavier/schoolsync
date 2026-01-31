@@ -1341,6 +1341,25 @@ export const studentPaymentsData = [
   },
 ];
 
+export const moderatorsData = [
+  {
+    id: 1,
+    name: "Sarah Moderator",
+    email: "sarah@moderator.com",
+    photo: "https://images.pexels.com/photos/1102341/pexels-photo-1102341.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "1234567890",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "David Guide",
+    email: "david@guide.com",
+    photo: "https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "1234567890",
+    status: "Active",
+  },
+];
+
 export const currentAcademicCycle = {
   session: "2025/2026",
   term: "First Term",

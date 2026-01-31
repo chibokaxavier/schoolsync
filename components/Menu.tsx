@@ -31,6 +31,11 @@ const menuItems = [
         href: "/list/parents",
       },
       {
+        icon: "/staff.png",
+        label: "Moderators",
+        href: "/list/moderators",
+      },
+      {
         icon: "/subject.png",
         label: "Subjects",
         href: "/list/subjects",

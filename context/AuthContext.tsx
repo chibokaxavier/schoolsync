@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Role = "admin" | "teacher" | "student" | "parent";
+type Role = "admin" | "teacher" | "student" | "parent" | "moderator";
 
 interface User {
     id: string | number;
@@ -57,6 +57,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 role: "parent",
                 avatar: "https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200",
             };
+        } else if (role === "moderator") {
+            userData = {
+                id: "mod-1",
+                name: "Sarah Moderator",
+                role: "moderator",
+                avatar: "https://images.pexels.com/photos/1102341/pexels-photo-1102341.jpeg?auto=compress&cs=tinysrgb&w=1200",
+            };
         }
 
         setUser(userData);
@@ -67,7 +74,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Load role from localStorage on mount
     useEffect(() => {
         const savedRole = localStorage.getItem("schoolsync-role") as Role;
-        if (savedRole && ["admin", "teacher", "student", "parent"].includes(savedRole)) {
+        if (savedRole && ["admin", "teacher", "student", "parent", "moderator"].includes(savedRole)) {
             setRole(savedRole);
         }
     }, []);
