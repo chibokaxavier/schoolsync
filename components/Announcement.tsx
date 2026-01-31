@@ -1,68 +1,49 @@
-"use client";
-import { useState } from "react";
-import "react-calendar/dist/Calendar.css";
-
-// Default/Initial events data
-const initialEvents = [
-  {
-    id: 1,
-    title: "Science Fair Registration",
-    time: "2025-02-15",
-    description: "Registration for the annual Science Fair is now open! Submit your project proposals by the end of the month to participate.",
-  },
-  {
-    id: 2,
-    title: "Parent-Teacher Conference",
-    time: "2025-03-10",
-    description: "Join us for the semester's parent-teacher conferences. Please book your slots in advance through the portal.",
-  },
-  {
-    id: 3,
-    title: "Spring Break Holiday",
-    time: "2025-04-01",
-    description: "School will be closed for Spring Break from April 1st to April 7th. Enjoy your holiday!",
-    target: "Everyone",
-  },
-];
+import { announcementsData } from "@/lib/data";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 interface AnnouncementProps {
   data?: {
     id: number | string;
     title: string;
-    time: string;
+    date: string;
     description: string;
-    target?: string;
+    visibleTo?: string[];
   }[];
 }
 
 const Announcement = ({ data }: AnnouncementProps) => {
-  // Use provided data or fallback to initialEvents
-  const displayEvents = data && data.length > 0 ? data : initialEvents;
+  const { user } = useAuth();
+  const { role } = user;
+
+  // Use provided data or filter from announcementsData
+  const filteredAnnouncements = (data && data.length > 0 ? data : announcementsData)
+    .filter(a => !a.visibleTo || a.visibleTo.includes(role as any))
+    .slice(0, 3);
 
   return (
-    <div className="bg-white p-4 rounded-md">
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl my-4 font-semibold">Announcements</h1>
-        <p className="text-sm my-4 font-semibold">View more</p>
+    <div className="bg-card p-4 rounded-xl border border-border shadow-sm">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-semibold text-foreground">Announcements</h1>
+        <Link href="/list/announcements">
+          <span className="text-xs font-semibold text-muted-foreground hover:text-primary transition-colors cursor-pointer">View All</span>
+        </Link>
       </div>
       <div className="flex flex-col gap-4">
-        {displayEvents.map((event, i) => (
+        {filteredAnnouncements.map((announcement) => (
           <div
-            className="p-5 rounded-md odd:bg-lamaPurpleLight even:bg-lamaYellowLight"
-            key={event.id}
+            className="p-5 rounded-md odd:bg-lamaPurpleLight/30 even:bg-lamaYellowLight/30 border border-border/50"
+            key={announcement.id}
           >
             <div className="flex items-center justify-between">
-              <h1 className="font-semibold text-gray-600">{event.title}</h1>
-              <div className="flex gap-2">
-                {event.target && (
-                  <span className="p-1 rounded-md bg-white text-xs text-gray-400 border border-gray-100">
-                    {event.target}
-                  </span>
-                )}
-                <span className="p-1 bg-white text-gray-300 text-xs rounded-md">{event.time}</span>
-              </div>
+              <h1 className="font-semibold text-foreground/80">{announcement.title}</h1>
+              <span className="p-1 px-2 bg-background/50 text-muted-foreground text-[10px] rounded-md border border-border tabular-nums">
+                {announcement.date}
+              </span>
             </div>
-            <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
+            <p className="mt-2 text-muted-foreground text-xs leading-relaxed line-clamp-2">
+              {announcement.description}
+            </p>
           </div>
         ))}
       </div>
