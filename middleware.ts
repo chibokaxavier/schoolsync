@@ -17,15 +17,25 @@ export function middleware(request: NextRequest) {
     // Get the role from cookies
     const role = request.cookies.get("schoolsync-role")?.value as Role | undefined;
 
-    // Default to student if no role is found (or whatever your guest/default role is)
-    const currentRole = role || "student";
-
-    // Redirect root to role-specific dashboard
-    if (pathname === "/") {
-        return NextResponse.redirect(new URL(`/${currentRole}`, request.url));
+    // 1. If no role and not on /login, redirect to /login
+    if (!role && pathname !== "/login") {
+        return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (!isAuthorized(currentRole, pathname)) {
+    // 2. If role exists and on /login, redirect to their dashboard
+    if (role && pathname === "/login") {
+        return NextResponse.redirect(new URL(`/${role}`, request.url));
+    }
+
+    // 3. If role exists and on root /, redirect to dashboard
+    if (role && pathname === "/") {
+        return NextResponse.redirect(new URL(`/${role}`, request.url));
+    }
+
+    // 4. Default Guest handling if somehow role is still missing (safety)
+    const currentRole = role || "student"; // Should not reach here for protected pages if #1 is active
+
+    if (!isAuthorized(currentRole, pathname) && pathname !== "/login") {
         console.warn(`Middleware: Unauthorized access attempt to ${pathname} by role ${currentRole}. Redirecting to /`);
         return NextResponse.redirect(new URL("/", request.url));
     }
