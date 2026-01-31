@@ -13,7 +13,6 @@ model User {
   password  String
   role      String   @default("STUDENT") // "ADMIN", "TEACHER", "STUDENT"
   
-  // Optional links to specific profiles
   studentProfile Student? 
   teacherProfile Teacher?
 }
