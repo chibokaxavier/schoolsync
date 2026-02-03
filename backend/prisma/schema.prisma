@@ -4,31 +4,42 @@ generator client {
 
 datasource db {
   provider = "postgresql"
- 
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  role      String   @default("STUDENT") // "ADMIN", "TEACHER", "STUDENT"
-  
-  studentProfile Student? 
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String @default("STUDENT") // "ADMIN", "TEACHER", "STUDENT", "PARENT"
+
+  studentProfile Student?
   teacherProfile Teacher?
+  parentProfile  Parent?
 }
 
 model Student {
-  id          Int    @id @default(autoincrement())
-  regNumber   String @unique
-  grade       Int
-  userId      Int    @unique
-  user        User   @relation(fields: [userId], references: [id])
+  id        Int     @id @default(autoincrement())
+  regNumber String  @unique
+  grade     Int
+  userId    Int     @unique
+  user      User    @relation(fields: [userId], references: [id])
+  parentId  Int?
+  parent    Parent? @relation(fields: [parentId], references: [id])
 }
 
 model Teacher {
-  id          Int    @id @default(autoincrement())
-  staffId     String @unique
-  subject     String
-  userId      Int    @unique
-  user        User   @relation(fields: [userId], references: [id])
+  id      Int    @id @default(autoincrement())
+  staffId String @unique
+  subject String
+  userId  Int    @unique
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model Parent {
+  id          Int       @id @default(autoincrement())
+  phoneNumber String
+  address     String?
+  userId      Int       @unique
+  user        User      @relation(fields: [userId], references: [id])
+  students    Student[]
 }
