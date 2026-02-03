@@ -1,44 +1,52 @@
 generator client {
-  provider   = "prisma-client-js"
-  engineType = "library" 
+  provider = "prisma-client-js"
+  // No engineType needed, Prisma 6 defaults to the stable one
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// ... your models (User, Student, etc.)
 
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  role     String @default("STUDENT") // "ADMIN", "TEACHER", "STUDENT", "PARENT"
-
-  studentProfile Student?
-  teacherProfile Teacher?
-  parentProfile  Parent?
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  password        String
+  role            String   @default("STUDENT") // "ADMIN", "TEACHER", "STUDENT", "PARENT"
+  studentProfile  Student?
+  teacherProfile  Teacher?
+  parentProfile   Parent?
 }
 
 model Student {
-  id        Int     @id @default(autoincrement())
-  regNumber String  @unique
-  grade     Int
-  userId    Int     @unique
-  user      User    @relation(fields: [userId], references: [id])
-  parentId  Int?
-  parent    Parent? @relation(fields: [parentId], references: [id])
+  id         Int      @id @default(autoincrement())
+  firstName  String   // Added
+  lastName   String   // Added
+  regNumber  String   @unique
+  grade      Int
+  userId     Int      @unique
+  user       User     @relation(fields: [userId], references: [id])
+  parentId   Int?
+  parent     Parent?  @relation(fields: [parentId], references: [id])
 }
 
 model Teacher {
-  id      Int    @id @default(autoincrement())
-  staffId String @unique
-  subject String
-  userId  Int    @unique
-  user    User   @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  firstName  String   // Added
+  lastName   String   // Added
+  staffId    String   @unique
+  subject    String
+  userId     Int      @unique
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model Parent {
   id          Int       @id @default(autoincrement())
+  firstName   String    // Added
+  lastName    String    // Added
   phoneNumber String
   address     String?
   userId      Int       @unique
