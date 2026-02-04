@@ -10,11 +10,13 @@ import Menu from "./Menu";
 import Navbar from "./Navbar";
 
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
-    const { user } = useAuth();
+    const { user, isInitialized } = useAuth();
     const pathname = usePathname();
     const router = useRouter();
 
     useEffect(() => {
+        if (!isInitialized) return;
+
         // 1. If no user and not on /login, redirect to /login
         if (!user && pathname !== "/login") {
             router.push("/login");
@@ -25,18 +27,18 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
         // but client-side check is good for RBAC within the app session
         if (user && !isAuthorized(user.role, pathname)) {
             console.warn(`Unauthorized access attempt to ${pathname} by role ${user.role}. Redirecting to dashboard`);
-            router.push(`/${user.role}`);
+            router.push(`/${user.role.toLowerCase()}`);
         }
-    }, [user, pathname, router]);
+    }, [user, isInitialized, pathname, router]);
 
     // 1. For Login page, render strictly children
     if (pathname === "/login") {
         return <>{children}</>;
     }
 
-    // 2. If no user and not on /login, we should be redirected by middleware, 
-    // but we return null/loading to avoid flash
-    if (!user) {
+    // 2. If not initialized or no user and not on /login, 
+    // we show loading to avoid flashes or race condition redirects
+    if (!isInitialized || (!user && pathname !== "/login")) {
         return (
             <div className="h-screen flex items-center justify-center bg-background">
                 <div className="flex flex-col items-center gap-4">
@@ -46,6 +48,7 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
             </div>
         );
     }
+
 
     // 3. Authenticated Dashboard Layout
     const homeHref = `/${user.role}`;

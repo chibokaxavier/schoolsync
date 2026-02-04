@@ -16,6 +16,7 @@ interface User {
 
 interface AuthContextType {
     user: User | null;
+    isInitialized: boolean;
     setRole: (role: Role | null) => void;
     logout: () => void;
 }
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     const logout = () => {
         setUser(null);
@@ -31,11 +33,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         document.cookie = "schoolsync-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     };
 
-    const setRole = (role: Role | null) => {
+    const setRole = (role: Role | string | null) => {
         if (!role) {
             logout();
             return;
         }
+
+        const normalizedRole = role.toLowerCase() as Role;
 
         const defaultAdmin: User = {
             id: "admin-1",
@@ -79,20 +83,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         setUser(userData);
-        localStorage.setItem("schoolsync-role", role);
-        document.cookie = `schoolsync-role=${role}; path=/; max-age=31536000; SameSite=Lax`;
+        localStorage.setItem("schoolsync-role", normalizedRole);
+        document.cookie = `schoolsync-role=${normalizedRole}; path=/; max-age=31536000; SameSite=Lax`;
     };
 
     // Load role from localStorage on mount
     useEffect(() => {
-        const savedRole = localStorage.getItem("schoolsync-role") as Role;
-        if (savedRole && ["admin", "teacher", "student", "parent", "moderator"].includes(savedRole)) {
+        const savedRole = localStorage.getItem("schoolsync-role");
+        if (savedRole) {
             setRole(savedRole);
         }
+        setIsInitialized(true);
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setRole, logout }}>
+        <AuthContext.Provider value={{ user, isInitialized, setRole, logout }}>
             {children}
         </AuthContext.Provider>
     );

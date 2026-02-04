@@ -29,18 +29,18 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #F7F8FA;
+  --background: #f7f8fa;
   --foreground: #1f2937;
 
   --primary: #6366f1;
   --primary-foreground: #ffffff;
 
-  --sky: #C3EBFA;
-  --sky-light: #EDF9FD;
-  --purple: #CFCEFF;
-  --purple-light: #F1F0FF;
-  --yellow: #FAE27C;
-  --yellow-light: #FEFCE8;
+  --sky: #c3ebfa;
+  --sky-light: #edf9fd;
+  --purple: #cfceff;
+  --purple-light: #f1f0ff;
+  --yellow: #fae27c;
+  --yellow-light: #fefce8;
 
   --card: #ffffff;
   --card-foreground: #1f2937;
@@ -81,12 +81,13 @@
     font-family: var(--font-jamjuree, monospace);
     background-color: var(--color-background);
     color: var(--color-foreground);
-    transition: background-color 0.2s ease-in-out, color 0.1s ease-in-out;
+    transition:
+      background-color 0.2s ease-in-out,
+      color 0.1s ease-in-out;
   }
 }
 
 @layer utilities {
-
   /* Hide scrollbar */
   ::-webkit-scrollbar {
     display: none;
@@ -208,7 +209,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
     border-color: var(--color-border);
   }
 }

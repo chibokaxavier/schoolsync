@@ -8,7 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ... your models (User, Student, etc.)
 
 
 model User {

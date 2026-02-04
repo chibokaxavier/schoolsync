@@ -27,10 +27,12 @@ export const RoutePermissions: Record<string, Role[]> = {
     "/settings": ["admin", "teacher", "student", "parent", "moderator"],
 };
 
-export const isAuthorized = (role: Role, path: string): boolean => {
+export const isAuthorized = (role: Role | string, path: string): boolean => {
+    const normalizedRole = role.toLowerCase() as Role;
+
     // Check exact match first
     if (RoutePermissions[path]) {
-        return RoutePermissions[path].includes(role);
+        return RoutePermissions[path].includes(normalizedRole);
     }
 
     // Check prefix for recursive routes (e.g., /list/teachers/1)
@@ -39,9 +41,10 @@ export const isAuthorized = (role: Role, path: string): boolean => {
     );
 
     if (matchingPath) {
-        return RoutePermissions[matchingPath].includes(role);
+        return RoutePermissions[matchingPath].includes(normalizedRole);
     }
 
     // Default to home access for all roles if not specifically denied
     return true;
 };
+
