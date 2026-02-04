@@ -16,15 +16,26 @@ import {
 } from "lucide-react";
 
 const LoginPage = () => {
-    const { setRole } = useAuth();
+    const dispatch = useDispatch();
+    const [login, { isLoading }] = useLoginMutation();
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
-    const [selectedRole, setSelectedRole] = useState<Role>("student");
+    const [email, setEmail] = useState("admin@schoolsync.com"); // Default for demo
+    const [password, setPassword] = useState("xavier6464"); // Default for demo
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setRole(selectedRole);
-        router.push(`/${selectedRole}`);
+        try {
+            const result = await login({ email, password }).unwrap();
+            dispatch(setCredentials({
+                user: result.user,
+                token: result.token
+            }));
+            router.push(`/${result.user.role.toLowerCase()}`);
+        } catch (err: any) {
+            console.error("Login failed:", err);
+            alert(err?.data?.error || "Login failed. Please check your credentials.");
+        }
     };
 
     const roles: { id: Role; label: string; icon: any; color: string }[] = [

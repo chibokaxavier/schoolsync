@@ -6,6 +6,7 @@ import Link from "next/link";
 import { NotebookPen } from "lucide-react";
 import Menu from "@/components/Menu";
 import { ReduxProvider } from "@/lib/redux/ReduxProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthGate } from "@/components/AuthGate";
 import { cookies } from "next/headers";
 
