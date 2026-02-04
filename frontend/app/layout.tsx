@@ -1,17 +1,10 @@
-import { Toaster } from "sonner";
-
-// ... inside ThemeProvider ...
-<ReduxProvider>
-  <AuthGate>
-    {children}
-  </AuthGate>
-  <Toaster position="top-center" richColors />
-</ReduxProvider>
+import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/lib/redux/ReduxProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthGate } from "@/components/AuthGate";
+import { Toaster } from "sonner";
 
 const jamjuree = Bai_Jamjuree({
   variable: "--font-jamjuree",
@@ -42,6 +35,7 @@ export default function RootLayout({
             <AuthGate>
               {children}
             </AuthGate>
+            <Toaster position="top-center" richColors />
           </ReduxProvider>
         </ThemeProvider>
       </body>

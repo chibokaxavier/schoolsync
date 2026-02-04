@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/lib/redux/api/apiSlice";
 import { setCredentials } from "@/lib/redux/slices/authSlice";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Role } from "@/lib/permissions";
@@ -37,7 +38,7 @@ const LoginPage = () => {
             router.push(`/${result.user.role.toLowerCase()}`);
         } catch (err: any) {
             console.error("Login failed:", err);
-            alert(err?.data?.error || "Login failed. Please check your credentials.");
+            toast.error(err?.data?.error || "Login failed. Please check your credentials.");
         }
     };
 
