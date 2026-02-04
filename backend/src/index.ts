@@ -7,6 +7,12 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
+import cors from 'cors';
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
 // Link the routes
 app.use('/api/auth', authRoutes);
 
