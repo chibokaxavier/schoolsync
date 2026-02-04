@@ -5,8 +5,7 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { NotebookPen } from "lucide-react";
 import Menu from "@/components/Menu";
-import { AuthProvider } from "@/context/AuthContext";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ReduxProvider } from "@/lib/redux/ReduxProvider";
 import { AuthGate } from "@/components/AuthGate";
 import { cookies } from "next/headers";
 
@@ -35,11 +34,11 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
+          <ReduxProvider>
             <AuthGate>
               {children}
             </AuthGate>
-          </AuthProvider>
+          </ReduxProvider>
         </ThemeProvider>
       </body>
     </html>
