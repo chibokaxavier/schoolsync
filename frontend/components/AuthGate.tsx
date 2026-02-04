@@ -7,6 +7,7 @@ import { isAuthorized } from "@/lib/permissions";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { NotebookPen } from "lucide-react";
+import { toast } from "sonner";
 import Menu from "./Menu";
 import Navbar from "./Navbar";
 
@@ -23,6 +24,7 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
         // We also clear the cookie to prevent middleware loops if cookies outlive local storage
         if (!user && pathname !== "/login") {
             document.cookie = "schoolsync-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            toast.error("Session expired. Please log in again.");
             router.push("/login");
             return;
         }
@@ -31,6 +33,7 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
         // but client-side check is good for RBAC within the app session
         if (user && !isAuthorized(user.role, pathname)) {
             console.warn(`Unauthorized access attempt to ${pathname} by role ${user.role}. Redirecting to dashboard`);
+            toast.warning(`Access denied. Redirecting to ${user.role} dashboard.`);
             router.push(`/${user.role.toLowerCase()}`);
         }
     }, [user, isInitialized, pathname, router]);
