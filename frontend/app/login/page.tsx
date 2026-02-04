@@ -22,8 +22,9 @@ const LoginPage = () => {
     const [login, { isLoading }] = useLoginMutation();
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
-    const [email, setEmail] = useState("admin@schoolsync.com"); // Default for demo
-    const [password, setPassword] = useState("xavier6464"); // Default for demo
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();

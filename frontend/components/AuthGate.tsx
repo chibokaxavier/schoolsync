@@ -20,7 +20,9 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
         if (!isInitialized) return;
 
         // 1. If no user and not on /login, redirect to /login
+        // We also clear the cookie to prevent middleware loops if cookies outlive local storage
         if (!user && pathname !== "/login") {
+            document.cookie = "schoolsync-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
             router.push("/login");
             return;
         }
@@ -54,6 +56,7 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
 
 
     // 3. Authenticated Dashboard Layout
+    if (!user) return null; // Satisfy TypeScript: user is guaranteed here by redirects/loading above
     const homeHref = `/${user.role}`;
 
     return (
