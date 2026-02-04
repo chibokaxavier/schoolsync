@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useAuth } from "@/context/AuthContext";
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "@/lib/redux/api/apiSlice";
+import { setCredentials } from "@/lib/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Role } from "@/lib/permissions";
