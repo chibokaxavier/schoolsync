@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser, selectIsInitialized } from "@/lib/redux/slices/authSlice";
 import { isAuthorized } from "@/lib/permissions";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,7 +11,8 @@ import Menu from "./Menu";
 import Navbar from "./Navbar";
 
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
-    const { user, isInitialized } = useAuth();
+    const user = useSelector(selectCurrentUser);
+    const isInitialized = useSelector(selectIsInitialized);
     const pathname = usePathname();
     const router = useRouter();
 
@@ -48,6 +50,7 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
             </div>
         );
     }
+
 
 
     // 3. Authenticated Dashboard Layout

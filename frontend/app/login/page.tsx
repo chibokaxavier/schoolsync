@@ -75,52 +75,27 @@ const LoginPage = () => {
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-6">
-                    {/* Role Selection */}
-                    <div className="space-y-3">
-                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                            Default Role (Simulator)
-                        </label>
-                        <div className="grid grid-cols-2 gap-2">
-                            {roles.map((role) => {
-                                const Icon = role.icon;
-                                const isSelected = selectedRole === role.id;
-                                return (
-                                    <button
-                                        key={role.id}
-                                        type="button"
-                                        onClick={() => setSelectedRole(role.id)}
-                                        className={`flex items-center gap-2 p-2 rounded-lg border transition-all ${isSelected
-                                            ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                            : "border-border bg-muted/20 text-muted-foreground hover:border-border-hover hover:bg-muted/50"
-                                            }`}
-                                    >
-                                        <Icon className="w-4 h-4" />
-                                        <span className="text-xs font-medium">{role.label}</span>
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
-
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-foreground ml-1">
-                                Username
+                                Email Address
                             </label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
                                     <User className="w-4 h-4" />
                                 </div>
                                 <input
-                                    type="text"
-                                    placeholder="Enter your username"
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     className="w-full pl-10 pr-4 py-2.5 bg-muted/30 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/60"
-                                    defaultValue="admin-demo"
+                                    required
                                 />
                             </div>
                         </div>
 
-                        <div className="space-y-2 bg-">
+                        <div className="space-y-2">
                             <label className="text-sm font-medium text-foreground ml-1">
                                 Password
                             </label>
@@ -131,8 +106,10 @@ const LoginPage = () => {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Enter your password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     className="w-full pl-10 pr-12 py-2.5 bg-muted/30 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/60"
-                                    defaultValue="••••••••"
+                                    required
                                 />
                                 <button
                                     type="button"
@@ -166,9 +143,10 @@ const LoginPage = () => {
 
                     <button
                         type="submit"
-                        className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
+                        disabled={isLoading}
+                        className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Sign In
+                        {isLoading ? "Signing In..." : "Sign In"}
                     </button>
                 </form>
 
