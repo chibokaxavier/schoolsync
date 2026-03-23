@@ -4,7 +4,8 @@ import ConfirmPaymentModal from "@/components/ConfirmPaymentModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import { studentPaymentsData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import EmptyState from "@/components/EmptyState";
@@ -48,8 +49,9 @@ const columns = [
 ];
 
 const PaymentTrackingPage = () => {
-    const { user } = useAuth();
-    const { role } = user;
+    const user = useSelector(selectCurrentUser);
+    const role = user?.role;
+    if (!user) return null;
     const [selectedStudent, setSelectedStudent] = useState<any>(null);
     const searchParams = useSearchParams();
     const query = searchParams.get("search")?.toLowerCase();

@@ -4,7 +4,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { eventsData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo } from "react";
@@ -52,8 +53,9 @@ const columns = [
 ];
 
 const Page = () => {
-  const { user } = useAuth();
-  const { role } = user;
+  const user = useSelector(selectCurrentUser);
+  const role = user?.role;
+  if (!user) return null;
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
 

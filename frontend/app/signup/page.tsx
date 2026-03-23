@@ -21,12 +21,16 @@ import {
     MapPin,
     BookOpen,
     Hash,
+    Eye,
+    EyeOff,
 } from "lucide-react";
 
 const SignupPage = () => {
     const [signup, { isLoading }] = useSignupMutation();
     const router = useRouter();
     const [role, setRole] = useState<string>("student");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showSecretKey, setShowSecretKey] = useState(false);
     
     // Form state
     const [formData, setFormData] = useState({
@@ -114,8 +118,26 @@ const SignupPage = () => {
                                     <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
                                         <Lock className="w-4 h-4" />
                                     </div>
-                                    <Input id="password" type="password" value={formData.password} onChange={handleChange} className="pl-10 h-12 bg-muted/20 border-border/60 rounded-xl" required />
+                                    <Input 
+                                        id="password" 
+                                        type={showPassword ? "text" : "password"} 
+                                        value={formData.password} 
+                                        onChange={handleChange} 
+                                        className="pl-10 pr-10 h-12 bg-muted/20 border-border/60 rounded-xl" 
+                                        minLength={8} 
+                                        required 
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground transition-colors outline-none"
+                                    >
+                                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
                                 </div>
+                                {formData.password.length > 0 && formData.password.length < 8 && (
+                                    <p className="text-[10px] text-red-500 mt-1 px-1">Password must be at least 8 characters long.</p>
+                                )}
                             </div>
 
                             {/* Shared Profile Fields */}
@@ -222,12 +244,20 @@ const SignupPage = () => {
                                         </div>
                                         <Input 
                                             id="secretKey" 
+                                            type={showSecretKey ? "text" : "password"}
                                             placeholder="Enter key provided by Administrator"
                                             value={formData.secretKey} 
                                             onChange={handleChange} 
-                                            className="pl-10 h-12 bg-primary/5 border-primary/30 rounded-xl focus-visible:ring-primary/20" 
+                                            className="pl-10 pr-10 h-12 bg-primary/5 border-primary/30 rounded-xl focus-visible:ring-primary/20" 
                                             required 
                                         />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowSecretKey(!showSecretKey)}
+                                            className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground transition-colors outline-none"
+                                        >
+                                            {showSecretKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                        </button>
                                     </div>
                                     <p className="text-[10px] text-muted-foreground px-1 italic">
                                         * This key is required to register as a staff member or moderator.

@@ -5,12 +5,14 @@ import BigCalendar from "@/components/BigCalendar";
 import EventCalendar from "@/components/EventCalendar";
 import Performance from "@/components/Performance";
 import UserCard from "@/components/UserCard";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Image from "next/image";
 import React from "react";
 
 const TeacherDashboard = () => {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
+  if (!user) return null;
 
   return (
     <div className="p-4 md:p-6 lg:px-8 flex gap-4 flex-col lg:flex-row h-full">

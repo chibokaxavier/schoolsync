@@ -108,6 +108,7 @@ const LoginPage = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="pl-10 pr-12 h-12 bg-muted/20 border-border/60 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary transition-all duration-300"
+                                    minLength={8}
                                     required
                                 />
                                 <button

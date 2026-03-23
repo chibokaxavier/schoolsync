@@ -2,7 +2,8 @@
 
 import Table from "@/components/Table";
 import { feeStructureData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import React from "react";
 
 const columns = [
@@ -42,8 +43,9 @@ type FeeStructure = {
 };
 
 const FeeStructurePage = () => {
-    const { user } = useAuth();
-    const { role } = user;
+    const user = useSelector(selectCurrentUser);
+    const role = user?.role;
+    if (!user) return null;
     const renderRow = (item: FeeStructure) => {
         const total = item.tuition + item.bus + item.uniform + item.other;
         return (

@@ -17,6 +17,10 @@ export const signup = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Missing email, password, or role' });
         }
 
+        if (password.length < 8) {
+            return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+        }
+
         // Security: Prevent impersonation
         if (role.toUpperCase() === 'TEACHER') {
             const teacherSecret = process.env.TEACHER_SIGNUP_SECRET || 'school-teacher-2025';
@@ -70,7 +74,15 @@ export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
 
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findUnique({ 
+            where: { email },
+            include: {
+                studentProfile: true,
+                teacherProfile: true,
+                parentProfile: true,
+            }
+        });
+
         if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -80,13 +92,23 @@ export const login = async (req: Request, res: Response) => {
         const token = jwt.sign(
             { id: user.id, role: user.role },
             process.env.JWT_SECRET || 'secret',
-            { expiresIn: '1d' }
+            { expiresIn: '100d' }
         );
+
+        // Flaten User Data for Frontend Comfort
+        const profile = user.studentProfile || user.teacherProfile || user.parentProfile || {};
+        const fullUser = {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            name: (profile as any).firstName ? `${(profile as any).firstName} ${(profile as any).lastName}` : user.email.split('@')[0],
+            ...profile
+        };
 
         res.status(200).json({
             message: 'Login successful',
             token,
-            user: { id: user.id, email: user.email, role: user.role }
+            user: fullUser
         });
     } catch (error) {
         res.status(500).json({ error: 'Login failed', details: getErrorMessage(error) });
