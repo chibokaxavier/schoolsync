@@ -4,7 +4,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { teachersData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -66,8 +67,8 @@ const columns = [
 ];
 
 const TeacherListPage = () => {
-  const { user } = useAuth();
-  const { role } = user;
+  const user = useSelector(selectCurrentUser);
+  const role = user?.role;
   const [data, setData] = useState(teachersData);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);

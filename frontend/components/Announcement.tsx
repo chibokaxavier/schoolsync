@@ -1,7 +1,8 @@
 "use client";
 
 import { announcementsData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Link from "next/link";
 
 interface AnnouncementProps {
@@ -15,8 +16,10 @@ interface AnnouncementProps {
 }
 
 const Announcement = ({ data }: AnnouncementProps) => {
-  const { user } = useAuth();
-  const { role } = user;
+  const user = useSelector(selectCurrentUser);
+  const role = user?.role;
+
+  if (!user) return null;
 
   // Use provided data or filter from announcementsData
   const filteredAnnouncements = (data && data.length > 0 ? data : announcementsData)

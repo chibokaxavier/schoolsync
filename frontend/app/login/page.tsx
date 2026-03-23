@@ -7,15 +7,17 @@ import { setCredentials } from "@/lib/redux/slices/authSlice";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Role } from "@/lib/permissions";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
 import {
     Eye,
     EyeOff,
     Lock,
-    User,
-    GraduationCap,
-    Users,
-    UserCog,
+    Mail,
+    Loader2,
 } from "lucide-react";
 
 const LoginPage = () => {
@@ -26,7 +28,6 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -35,6 +36,7 @@ const LoginPage = () => {
                 user: result.user,
                 token: result.token
             }));
+            toast.success("Welcome back! Login successful.");
             router.push(`/${result.user.role.toLowerCase()}`);
         } catch (err: any) {
             console.error("Login failed:", err);
@@ -42,125 +44,123 @@ const LoginPage = () => {
         }
     };
 
-    const roles: { id: Role; label: string; icon: any; color: string }[] = [
-        { id: "admin", label: "Admin", icon: UserCog, color: "bg-lamaPurple" },
-        { id: "teacher", label: "Teacher", icon: Users, color: "bg-lamaSky" },
-        {
-            id: "student",
-            label: "Student",
-            icon: GraduationCap,
-            color: "bg-lamaYellow",
-        },
-        { id: "parent", label: "Parent", icon: User, color: "bg-lamaPurpleLight" },
-    ];
-
     return (
-        <div className="h-screen flex items-center justify-center bg-muted/30 dark:bg-background overflow-hidden relative">
-            {/* Decorative background elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 opacity-20 pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-lamaYellow/20 blur-[120px] rounded-full" />
-            </div>
-
-            <div className="bg-card w-full max-w-md p-8 rounded-2xl shadow-2xl border border-border/50 relative overflow-hidden">
-                {/* Logo and Header */}
-                <div className="flex flex-col items-center mb-8">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Image src="/logo.png" alt="logo" width={32} height={32} />
-                        <span className="text-2xl font-bold tracking-tight text-foreground">
-                            SchoolSync
-                        </span>
+        <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400/20 via-background to-background p-4 sm:p-8">
+            <div className="absolute inset-0 overflow-hidden -z-10 bg-grid-slate-900/[0.04] dark:bg-grid-white/[0.02]" />
+            
+            <Card className="w-full max-w-md border-border/40 bg-card/60 backdrop-blur-xl shadow-2xl relative overflow-hidden animate-in fade-in zoom-in duration-500">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-primary to-primary/50" />
+                
+                <CardHeader className="space-y-2 text-center pb-8 border-b border-border/10">
+                    <div className="flex justify-center mb-4">
+                        <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 ring-4 ring-primary/5">
+                            <Image src="/logo.png" alt="logo" width={40} height={40} className="drop-shadow-sm" />
+                        </div>
                     </div>
-                    <p className="text-muted-foreground text-sm">
-                        Welcome back! Please login to your account.
-                    </p>
-                </div>
+                    <CardTitle className="text-3xl font-bold tracking-tight text-foreground">SchoolSync</CardTitle>
+                    <CardDescription className="text-muted-foreground/80 text-base">
+                        Your academic journey starts here. Sign in to continue.
+                    </CardDescription>
+                </CardHeader>
 
-                <form onSubmit={handleLogin} className="space-y-6">
-                    <div className="space-y-4">
+                <CardContent className="pt-8 space-y-4">
+                    <form onSubmit={handleLogin} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground ml-1">
+                            <Label htmlFor="email" className="text-sm font-semibold tracking-wide ml-0.5">
                                 Email Address
-                            </label>
+                            </Label>
                             <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
-                                    <User className="w-4 h-4" />
+                                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
+                                    <Mail className="w-4 h-4" />
                                 </div>
-                                <input
+                                <Input
+                                    id="email"
                                     type="email"
-                                    placeholder="Enter your email"
+                                    placeholder="name@school.edu"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2.5 bg-muted/30 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/60"
+                                    className="pl-10 h-12 bg-muted/20 border-border/60 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary transition-all duration-300"
                                     required
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-sm font-medium text-foreground ml-1">
-                                Password
-                            </label>
+                            <div className="flex items-center justify-between px-0.5">
+                                <Label htmlFor="password" className="text-sm font-semibold tracking-wide">
+                                    Password
+                                </Label>
+                                <Link 
+                                    href="/forgot-password" 
+                                    className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                                >
+                                    Forgot password?
+                                </Link>
+                            </div>
                             <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
+                                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
                                     <Lock className="w-4 h-4" />
                                 </div>
-                                <input
+                                <Input
+                                    id="password"
                                     type={showPassword ? "text" : "password"}
-                                    placeholder="Enter your password"
+                                    placeholder="Enter secure password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-10 pr-12 py-2.5 bg-muted/30 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/60"
+                                    className="pl-10 pr-12 h-12 bg-muted/20 border-border/60 rounded-xl focus-visible:ring-primary/20 focus-visible:border-primary transition-all duration-300"
                                     required
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                                    className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-foreground transition-colors outline-none"
                                 >
                                     {showPassword ? (
-                                        <EyeOff className="w-4 h-4" />
+                                        <EyeOff className="w-5 h-5" />
                                     ) : (
-                                        <Eye className="w-4 h-4" />
+                                        <Eye className="w-5 h-5" />
                                     )}
                                 </button>
                             </div>
                         </div>
+
+                        <Button 
+                            type="submit" 
+                            disabled={isLoading} 
+                            className="w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 active:scale-[0.98]"
+                        >
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                    Authenticating...
+                                </>
+                            ) : (
+                                "Sign In"
+                            )}
+                        </Button>
+                    </form>
+                </CardContent>
+
+                <CardFooter className="flex flex-col space-y-4 pt-2 pb-8">
+                    <div className="relative w-full">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t border-border/50" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-card px-3 text-muted-foreground font-medium">New students & staff</span>
+                        </div>
                     </div>
-
-                    <div className="flex items-center justify-between text-xs px-1">
-                        <label className="flex items-center gap-2 cursor-pointer group">
-                            <input
-                                type="checkbox"
-                                className="w-4 h-4 rounded border-border text-primary focus:ring-primary/20"
-                            />
-                            <span className="text-muted-foreground group-hover:text-foreground transition-colors">
-                                Remember me
-                            </span>
-                        </label>
-                        <a href="#" className="text-primary font-medium hover:underline">
-                            Forgot password?
-                        </a>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {isLoading ? "Signing In..." : "Sign In"}
-                    </button>
-                </form>
-
-                <div className="mt-8 text-center">
-                    <p className="text-xs text-muted-foreground">
-                        Don't have an account?{" "}
-                        <a href="#" className="text-primary font-medium hover:underline">
-                            Contact Administrator
-                        </a>
+                    <p className="text-sm text-center text-muted-foreground">
+                        Don&apos;t have an account yet?{" "}
+                        <Link 
+                            href="/signup" 
+                            className="text-primary font-bold hover:underline underline-offset-4 decoration-2 transition-all"
+                        >
+                            Create an Account
+                        </Link>
                     </p>
-                </div>
-            </div>
+                </CardFooter>
+            </Card>
         </div>
     );
 };

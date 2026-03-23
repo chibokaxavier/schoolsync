@@ -23,7 +23,8 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 
 // Use this to trigger any Client Side action (like local delete)
 // OR eventually Server Actions
@@ -38,8 +39,9 @@ interface FormModalProps {
 
 
 const FormModal = ({ table, type, data, id, action, onSubmit }: FormModalProps) => {
-    const { user } = useAuth();
-    const { role } = user;
+    const user = useSelector(selectCurrentUser);
+    const role = user?.role;
+    if (!user || !role) return null;
     const Icon = type === "create" ? Plus : type === "update" ? Pencil : Trash;
     const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
     const bgColor =
@@ -130,8 +132,8 @@ const FormModal = ({ table, type, data, id, action, onSubmit }: FormModalProps) 
 
                         {/* Parent Link */}
                         <div className="flex flex-col gap-2">
-                            <Label className="text-sm text-gray-500">Parent Phone/Email</Label>
-                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="parentContact" />
+                            <Label className="text-sm text-gray-500">Parent Phone Number</Label>
+                            <Input type="text" className="p-2 rounded-md text-sm w-full" placeholder="+1234567890" name="parentPhone" />
                         </div>
                     </div>
                 ) : table === "teacher" && type === "create" ? (

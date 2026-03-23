@@ -5,7 +5,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { classesData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -47,12 +48,13 @@ const columns = [
 ];
 
 const ClassListPage = () => {
-  const { user } = useAuth();
-  const { role } = user;
+  const user = useSelector(selectCurrentUser);
+  const role = user?.role;
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
 
   const filteredData = useMemo(() => {
+    if (!user) return [];
     let data = [...classesData];
 
     // Automatic Role-Based Filtering
@@ -73,7 +75,9 @@ const ClassListPage = () => {
     }
 
     return data;
-  }, [query, role, user.name, user.class]);
+  }, [query, role, user?.name, user?.class]);
+
+  if (!user) return null;
 
   const renderRow = (item: Class) => (
     <tr

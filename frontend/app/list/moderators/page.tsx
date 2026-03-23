@@ -4,7 +4,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { moderatorsData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
@@ -35,8 +36,8 @@ const columns = [
         accessor: "info",
     },
     {
-        header: "Contact",
-        accessor: "contact",
+        header: "Phone",
+        accessor: "phone",
         className: "hidden md:table-cell",
     },
     {
@@ -51,8 +52,8 @@ const columns = [
 ];
 
 const ModeratorListPage = () => {
-    const { user } = useAuth();
-    const { role } = user;
+    const user = useSelector(selectCurrentUser);
+    const role = user?.role;
     const [data, setData] = useState(moderatorsData);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
     const searchParams = useSearchParams();

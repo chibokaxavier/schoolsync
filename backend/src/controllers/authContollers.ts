@@ -11,10 +11,25 @@ const getErrorMessage = (error: unknown) => {
 
 export const signup = async (req: Request, res: Response) => {
     try {
-        const { email, password, role, firstName, lastName, staffId, subject, regNumber, grade, phoneNumber, address } = req.body;
+        const { email, password, role, firstName, lastName, staffId, subject, regNumber, grade, phoneNumber, address, secretKey } = req.body;
 
         if (!email || !password || !role) {
             return res.status(400).json({ error: 'Missing email, password, or role' });
+        }
+
+        // Security: Prevent impersonation
+        if (role.toUpperCase() === 'TEACHER') {
+            const teacherSecret = process.env.TEACHER_SIGNUP_SECRET || 'school-teacher-2025';
+            if (secretKey !== teacherSecret) {
+                return res.status(403).json({ error: 'Invalid teacher verification key' });
+            }
+        }
+
+        if (role.toUpperCase() === 'ADMIN') {
+            const adminSecret = process.env.ADMIN_SIGNUP_SECRET || 'super-admin-2025';
+            if (secretKey !== adminSecret) {
+                return res.status(403).json({ error: 'Invalid admin verification key' });
+            }
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);

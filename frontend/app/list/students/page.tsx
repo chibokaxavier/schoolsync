@@ -5,7 +5,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { studentsData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -53,7 +54,7 @@ const columns = [
 ];
 
 const StudentListPage = () => {
-  const { user } = useAuth();
+  const user = useSelector(selectCurrentUser);
 
   const searchParams = useSearchParams();
   const query = searchParams.get("search")?.toLowerCase();
@@ -89,43 +90,45 @@ const StudentListPage = () => {
 
   if (!user) return null;
 
-  const renderRow = (item: Student) => (
+    const renderRow = (item: Student) => (
     <tr
       key={item.id}
-      className="border-b border-border even:bg-muted/30 text-sm hover:bg-lamaPurpleLight transition-colors"
+      className="border-b border-border even:bg-muted/30 text-sm hover:bg-accent transition-colors duration-200"
     >
-      <td className="flex items-center  gap-4 p-4">
-        {" "}
-        <Image
-          src={item.photo}
-          width={40}
-          height={40}
-          alt=""
-          className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
-        />
+      <td className="flex items-center gap-4 p-4">
+        <div className="relative w-10 h-10 md:hidden xl:block">
+            <Image
+            src={item.photo}
+            fill
+            alt=""
+            className="rounded-full object-cover border border-border/50"
+            />
+        </div>
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
+          <h3 className="font-semibold text-foreground tracking-tight">{item.name}</h3>
           <p className="text-xs text-muted-foreground">{item.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.studentId}</td>
-      <td className="hidden md:table-cell">{item.class}</td>
+      <td className="hidden md:table-cell text-muted-foreground font-medium">{item.studentId}</td>
+      <td className="hidden md:table-cell">
+        <span className="px-2 py-1 rounded-md bg-primary/5 text-primary text-xs font-bold border border-primary/10">
+            {item.class}
+        </span>
+      </td>
       <td className="hidden lg:table-cell">
         <span
-          className={`py-1 px-3 rounded-full text-xs font-semibold ${item.status === "Active"
-            ? "bg-green-100 text-green-700"
-            : "bg-red-100 text-red-700"
+          className={`py-1 px-3 rounded-full text-[10px] uppercase tracking-wider font-bold shadow-sm ${item.status === "Active"
+            ? "bg-green-500/10 text-green-600 border border-green-500/20"
+            : "bg-red-500/10 text-red-600 border border-red-500/20"
             }`}
         >
           {item.status}
         </span>
       </td>
-      <td className="hidden lg:table-cell">{item.phone}</td>
-      <td className="hidden lg:table-cell">{item.address}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/students/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky">
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaSky/10 text-primary hover:bg-lamaSky/20 transition-all border border-lamaSky/20">
               <Image src="/view.png" alt="" width={16} height={16} />
             </button>
           </Link>

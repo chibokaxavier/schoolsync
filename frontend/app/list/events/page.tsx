@@ -4,7 +4,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { eventsData } from "@/lib/data";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import { Filter, SortAsc, CalendarDays } from "lucide-react";
@@ -57,8 +58,9 @@ const columns = [
 ];
 
 const EventListPage = () => {
-    const { user } = useAuth();
-    const { role } = user;
+    const user = useSelector(selectCurrentUser);
+    const role = user?.role;
+    if (!user) return null;
     const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
     const searchParams = useSearchParams();
     const query = searchParams.get("search")?.toLowerCase();

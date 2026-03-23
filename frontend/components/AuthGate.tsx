@@ -20,9 +20,10 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (!isInitialized) return;
 
-        // 1. If no user and not on /login, redirect to /login
-        // We also clear the cookie to prevent middleware loops if cookies outlive local storage
-        if (!user && pathname !== "/login") {
+        const isPublicRoute = pathname === "/login" || pathname === "/signup";
+
+        // 1. If no user and not on a public route, redirect to /login
+        if (!user && !isPublicRoute) {
             document.cookie = "schoolsync-role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
             toast.error("Session expired. Please log in again.");
             router.push("/login");
@@ -31,21 +32,22 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
 
         // 2. middleware handles RBAC redirection for the most part, 
         // but client-side check is good for RBAC within the app session
-        if (user && !isAuthorized(user.role, pathname)) {
+        if (user && !isAuthorized(user.role, pathname) && !isPublicRoute) {
             console.warn(`Unauthorized access attempt to ${pathname} by role ${user.role}. Redirecting to dashboard`);
             toast.warning(`Access denied. Redirecting to ${user.role} dashboard.`);
             router.push(`/${user.role.toLowerCase()}`);
         }
     }, [user, isInitialized, pathname, router]);
 
-    // 1. For Login page, render strictly children
-    if (pathname === "/login") {
+    // 1. For Public pages, render strictly children
+    const isPublicRoute = pathname === "/login" || pathname === "/signup";
+    if (isPublicRoute) {
         return <>{children}</>;
     }
 
-    // 2. If not initialized or no user and not on /login, 
+    // 2. If not initialized or no user and not on a public route, 
     // we show loading to avoid flashes or race condition redirects
-    if (!isInitialized || (!user && pathname !== "/login")) {
+    if (!isInitialized || (!user && !isPublicRoute)) {
         return (
             <div className="h-screen flex items-center justify-center bg-background">
                 <div className="flex flex-col items-center gap-4">

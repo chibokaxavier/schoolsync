@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 import { RoutePermissions } from "@/lib/permissions";
 
 const menuItems = [
@@ -117,8 +118,9 @@ const menuItems = [
 ];
 
 const Menu = () => {
-  const { user } = useAuth();
-  const { role } = user;
+  const user = useSelector(selectCurrentUser);
+  const role = user?.role;
+  if (!user || !role) return null;
 
   return (
     <div className="mt-4 text-sm">

@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { useAuth } from "@/context/AuthContext";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "@/lib/redux/slices/authSlice";
 
 import { Role } from "@/lib/permissions";
 
@@ -20,7 +21,7 @@ export const RoleGate = ({
     allowedRoles,
     fallback = null
 }: RoleGateProps) => {
-    const { user } = useAuth();
+    const user = useSelector(selectCurrentUser);
 
     if (!user || !allowedRoles.includes(user.role)) {
         return <>{fallback}</>;
