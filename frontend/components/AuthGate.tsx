@@ -10,6 +10,7 @@ import { NotebookPen } from "lucide-react";
 import { toast } from "sonner";
 import Menu from "./Menu";
 import Navbar from "./Navbar";
+import { Skeleton } from "./ui/skeleton";
 
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
     const user = useSelector(selectCurrentUser);
@@ -46,13 +47,46 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
     }
 
     // 2. If not initialized or no user and not on a public route, 
-    // we show loading to avoid flashes or race condition redirects
+    // we show skeletons to avoid flashes or race condition redirects
     if (!isInitialized || (!user && !isPublicRoute)) {
         return (
-            <div className="h-screen flex items-center justify-center bg-background">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                    <span className="text-muted-foreground animate-pulse font-medium">Authenticating...</span>
+            <div className="flex h-screen overflow-hidden bg-background">
+                {/* Sidebar Skeleton */}
+                <div className="w-[14%] md:w-[12%] lg:w-[20%] xl:w-[18%] p-4 overflow-y-auto hidden md:block bg-card shadow-lg z-10 border-r space-y-8">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Skeleton className="size-10 rounded-lg" />
+                        <Skeleton className="h-6 w-24 hidden lg:block" />
+                    </div>
+                    <div className="space-y-4">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <Skeleton key={i} className="h-10 w-full rounded-xl" />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Main Content Skeleton */}
+                <div className="w-full md:w-[88%] lg:w-[80%] xl:w-[82%] bg-background overflow-y-auto flex flex-col">
+                    {/* Navbar Skeleton */}
+                    <div className="flex items-center justify-between p-4 md:p-6 w-full border-b border-border bg-card/50">
+                        <div className="flex flex-col gap-2">
+                            <Skeleton className="h-6 w-32" />
+                            <Skeleton className="h-4 w-20" />
+                        </div>
+                        <div className="flex items-center gap-4">
+                           <Skeleton className="size-9 rounded-full" />
+                           <Skeleton className="size-9 rounded-full" />
+                           <Skeleton className="h-10 w-32 rounded-full" />
+                        </div>
+                    </div>
+                    {/* Body Skeleton */}
+                    <main className="p-4 md:p-8 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <Skeleton className="h-32 rounded-2xl md:col-span-1" />
+                            <Skeleton className="h-32 rounded-2xl md:col-span-1" />
+                            <Skeleton className="h-32 rounded-2xl md:col-span-1" />
+                        </div>
+                        <Skeleton className="h-[400px] w-full rounded-2xl" />
+                    </main>
                 </div>
             </div>
         );

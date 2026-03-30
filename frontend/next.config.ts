@@ -7,7 +7,10 @@ const nextConfig: NextConfig = {
         hostname: "images.pexels.com",
       },
       {
-        hostname: "www.pexels.com", // your new domain
+        hostname: "www.pexels.com",
+      },
+      {
+        hostname: "api.dicebear.com",
       },
     ],
   },

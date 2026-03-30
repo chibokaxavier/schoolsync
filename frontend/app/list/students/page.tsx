@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useState, useMemo } from "react";
 import EmptyState from "@/components/EmptyState";
 import { RoleGate } from "@/components/RoleGate";
+import { resolveAvatar } from "@/lib/utils";
 
 type Student = {
   id: number;
@@ -98,10 +99,10 @@ const StudentListPage = () => {
       <td className="flex items-center gap-4 p-4">
         <div className="relative w-10 h-10 md:hidden xl:block">
             <Image
-            src={item.photo}
+            src={resolveAvatar(item.photo, item.name)}
             fill
             alt=""
-            className="rounded-full object-cover border border-border/50"
+            className="rounded-full object-cover border-2 border-primary/10 shadow-sm"
             />
         </div>
         <div className="flex flex-col">

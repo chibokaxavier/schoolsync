@@ -18,11 +18,28 @@ interface AuthState {
     isInitialized: boolean;
 }
 
-const initialState: AuthState = {
-    user: null,
-    token: null,
-    isInitialized: false,
+const isClient = typeof window !== "undefined";
+
+const getInitialAuth = () => {
+    if (!isClient) return { user: null, token: null, isInitialized: false };
+    
+    try {
+        const token = localStorage.getItem("schoolsync-token");
+        const userJson = localStorage.getItem("schoolsync-user");
+        if (token && userJson) {
+            return {
+                user: JSON.parse(userJson),
+                token,
+                isInitialized: true
+            };
+        }
+    } catch (e) {
+        console.error("Auth hydration failed", e);
+    }
+    return { user: null, token: null, isInitialized: true };
 };
+
+const initialState: AuthState = getInitialAuth();
 
 const authSlice = createSlice({
     name: "auth",
