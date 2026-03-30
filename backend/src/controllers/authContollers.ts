@@ -38,6 +38,27 @@ export const signup = async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Check for existing user by email
+        const existingUser = await prisma.user.findUnique({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ error: 'A user with this email already exists' });
+        }
+
+        // Role-based unique field checks
+        if (role.toUpperCase() === 'STUDENT') {
+            if (!regNumber) return res.status(400).json({ error: 'Registration number is required for students' });
+            const existingStudent = await prisma.student.findUnique({ where: { regNumber } });
+            if (existingStudent) {
+                return res.status(400).json({ error: 'A student with this Registration Number already exists' });
+            }
+        } else if (role.toUpperCase() === 'TEACHER') {
+            if (!staffId) return res.status(400).json({ error: 'Staff ID is required for teachers' });
+            const existingTeacher = await prisma.teacher.findUnique({ where: { staffId } });
+            if (existingTeacher) {
+                return res.status(400).json({ error: 'A teacher with this Staff ID already exists' });
+            }
+        }
+
         // Transaction ensures if the Profile fails, the User isn't created
         const result = await prisma.$transaction(async (tx) => {
             const user = await tx.user.create({
